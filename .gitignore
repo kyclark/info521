@@ -1,2 +1,10 @@
 reading
 *.zip
+*.aux
+*.log
+*.synctex.gz
+islr/data
+tmp
+.DS_Store
+*.swp
+*.orig

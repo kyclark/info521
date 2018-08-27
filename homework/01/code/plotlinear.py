@@ -1,6 +1,9 @@
+#!/usr/bin/env python3
+
 # plotlinear.py
 
 import numpy as np
+
 # NOTE: If you are running on MacOSX and encounter an error like the following:
 #     RuntimeError: Python is not installed as a framework.
 #     The Mac OS X backend will not be able to function correctly
@@ -22,7 +25,7 @@ plt.figure()
 plt.plot()
 
 for i in range(w0.shape[0]):
-    plt.plot(x, w0[i] + w1[i]*x)
+    plt.plot(x, w0[i] + w1[i] * x)
     print('\ny = ' + str(w0[i]) + ' + ' + str(w1[i]) + ' x')
 
 print("\nClose the current plot window to continue")
@@ -38,7 +41,9 @@ print("\nThe following will ask you for intercept and slope values")
 print("   (assuming floats) and will keep plotting lines on a new plot ")
 print("   until you enter 'save', which will save the plot as a pdf ")
 print("   called 'line_plot.pdf'.")
-print("(NOTE: you may see a MatplotlibDeprecationWarning -- you can safely ignore this)\n")
+print(
+    "(NOTE: you may see a MatplotlibDeprecationWarning -- you can safely ignore this)\n"
+)
 
 while True:
     intercept = input("Enter intercept: ")
@@ -53,11 +58,10 @@ while True:
     else:
         gradient = float(gradient)
 
-    plt.plot(x, intercept + gradient*x)
+    plt.plot(x, intercept + gradient * x)
     plt.show()
     plt.pause(.1)
 
     plt.savefig('line_plot.pdf', format='pdf')
 
     print("\ny = " + str(intercept) + " + " + str(gradient) + " x\n")
-
