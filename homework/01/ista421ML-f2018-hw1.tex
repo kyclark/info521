@@ -280,6 +280,24 @@ Write the uniformly random array to a file called `random.txt' using the numpy {
 
 (For fun: Anyone know what `humu' is?  Give the full name!)
 
+\begin{figure}
+
+\centering
+  \includegraphics[width=\linewidth]{code/humu-color.png}
+ \caption{Humu Color}
+\label{label}
+
+\end{figure}
+
+\begin{figure}
+
+\centering
+  \includegraphics[width=\linewidth]{code/humu-gray.png}
+ \caption{Humu Greyscale}
+\label{label}
+
+\end{figure}
+
 {\bf Solution.}
 
 \begin{verbatim}
@@ -808,7 +826,37 @@ Now, for another plot: create a function called exercise11 in hw1.py.  Add the f
 
 Generate a vector whose entries are the values of $\sin(\mathbf{x})$ for $\mathbf{x}$ in the range $[0,10]$ in steps of $0.01$, and plot it.  Make it so that the horizontal and vertical axes of the plot are labeled and include a plot title: label the y-axis `sin(x)', the x-axis 'x values' and provide a title for the plot, `Sine Function for x from 0.0 to 10.0' (look at pyplot xlabel, ylabel and title).  (In this course, you must {\bf always} label you plot axes!)  Include your plot in the pdf submission. (2\$)
 
-{\bf Solution~\ref{prob:11}b.} $<$Solution goes here$>$\\
+{\bf Solution~\ref{prob:11}b.} 
+
+\begin{figure}
+
+\centering
+  \includegraphics[width=\linewidth]{code/sine.png}
+ \caption{Plot sin(x)}
+\label{label}
+
+\end{figure}
+
+\begin{verbatim}
+def exercise11():
+    """
+    Plotting
+    :param: none
+    :return: void
+    """
+
+    x = np.arange(0, 10, .01)
+    y = np.sin(2 * np.pi * x)
+    plt.plot(x, y)
+    plt.title('Sine Function for x from 0.0 to 10.0')
+    plt.xlabel('x values')
+    plt.ylabel('sin(x)')
+    plt.show()
+    plt.savefig('sine.png')
+\end{verbatim}
+
+
+
 
 \end{enumerate}
 

@@ -18,7 +18,7 @@ def main():
     :param: none
     :return: void
     """
-    exercise6("../data/humu.txt", "out.txt")
+    exercise6("humu.txt", "out.txt")
     #exercise9()
     #exercise10c()
     #exercise11()
@@ -56,10 +56,12 @@ def exercise6(infile, outfile):
 
     plt.figure()
     plt.imshow(dat)
+    plt.savefig('humu-color.png')
     plt.show()
 
     print(plt.cm.cmapname)
 
+    plt.savefig('humu-gray.png')
     plt.imshow(dat, cmap='gray')
     plt.show()
 
@@ -158,15 +160,13 @@ def exercise11():
     :return: void
     """
 
-    fig = plt.figure()
-    v = []
-    for x in np.arange(0.0, 1.0, 0.01):
-        print("x = {} sin(x) = {}".format(x, math.sin(x)))
-        v.append(np.sin(x))
-        plt.plot(x, np.sin(x))
-
-    print(v)
-    plt.imshow(v)
+    x = np.arange(0, 10, .01)
+    y = np.sin(2 * np.pi * x)
+    plt.plot(x, y)
+    plt.title('Sine Function for x from 0.0 to 10.0')
+    plt.xlabel('x values')
+    plt.ylabel('sin(x)')
+    plt.savefig('sine.png')
     plt.show()
 
 
