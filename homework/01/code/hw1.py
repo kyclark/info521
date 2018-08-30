@@ -18,9 +18,10 @@ def main():
     :param: none
     :return: void
     """
-    exercise6("humu.txt", "out.txt")
+    #exercise6("humu.txt", "out.txt")
     #exercise9()
-    #exercise10c()
+    #exercise10b()
+    exercise10c()
     #exercise11()
 
 
@@ -61,8 +62,8 @@ def exercise6(infile, outfile):
 
     print(plt.cm.cmapname)
 
-    plt.savefig('humu-gray.png')
     plt.imshow(dat, cmap='gray')
+    plt.savefig('humu-gray.png')
     plt.show()
 
     for _ in range(0, 2):
@@ -73,6 +74,7 @@ def exercise6(infile, outfile):
 
     ran1 = np.loadtxt(outfile)
     plt.imshow(ran1)
+    plt.savefig('random.png')
     plt.show()
 
     print('Done.')
@@ -129,7 +131,7 @@ def exercise10b():
     print("b\n{}".format(b))
     print("a + b\n{}".format(a + b))
     print("a * b\n{}".format(a * b))
-    print("a ・ b\n{}".format(a.transpose().dot(b)))
+    print("aT . b\n{}".format(a.transpose().dot(b)))
 
 
 # --------------------------------------------------
@@ -140,10 +142,13 @@ def exercise10c():
     :return: void
     """
 
-    np.random.seed(seed=2)
-    X = np.asmatrix(np.random.rand(3, 3))
+    np.random.seed(seed=5)
     a = np.random.rand(3, 1)
     b = np.random.rand(3, 1)
+
+    np.random.seed(seed=2)
+    X = np.asmatrix(np.random.rand(3, 3))
+
     print("a\n {}".format(a))
     print("b\n{}".format(b))
     print("X\n{}".format(X))

@@ -38,6 +38,7 @@ for _ in range(0, 2):
 
 ran1 = np.loadtxt(outfile)
 plt.imshow(ran1)
+plt.savefig('random.png')
 plt.show()
 
 print('Done.')

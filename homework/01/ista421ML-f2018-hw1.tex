@@ -111,17 +111,53 @@ framexleftmargin=1mm, framextopmargin=1mm, frame=single,#1
 
 \begin{center}
     {\Large {\bf ISTA 421 / INFO 521 - Homework 1}} \\
+    \boldred{Due: Friday, August 31, 5pm} \\
+    24 points total (same for undergraduates and graduates) \\
+    \vspace{1cm}
 \end{center}
 
 \begin{flushright}
-Charles Kenneth "Ken" Youens-Clark
+STUDENT NAME  %% Fill in your name here
 
-Graduate 
+Undergraduate / Graduate %% select which you are!
 \end{flushright}
 
 \vspace{1cm}
 
+{\Large {\bf Instructions}}
+
+On this (and other ``regular'' -- i.e., non-midterm/final assignments) you may {\em discuss} problems with others in the class, BUT your code and written solutions \boldred{MUST BE YOUR OWN}.  Do not copy code or written solutions by others.  Copying is cheating.
+
+{\bf If you work with others, you must include in your submission a list of people you talked with.  If you reference other material (fine to do!), you must cite those resources.}
+
+Include in your final submission the pdf of written answers along with separate files for any python scripts that you write in support of answering the questions. 
+You are required to create either a .zip or tarball (.tar.gz / .tgz) archive of all of the files for your submission and submit the archive to the D2L dropbox by the date/time deadline above.
+Refer to the course submission instructions at: \\
+\url{http://w3.sista.arizona.edu/~clayton/courses/ml/submissions.html}
+
+In future problem sets, there will be additional or different problems that graduate students must complete, but in this case, everyone must do the same problems for the same points.
+
+Mathematical content: This is a mathematical subject and there is a wide variance in backgrounds of students who take this course. For example, there may be problems in the assignments which seem more difficult than they really are simply because you are not (yet) used to the kind of problem. 
+
+The purpose of this assignment is to learn (or remember) how to write short programs to explore mathematical ideas. It was written on the assumption that you will use Python for your assignments (recommended). If you wish do some of the tasks in a different language you may need to adjust the questions a little bit, but what goes into the PDF (e.g., plots, answers) should be the same. 
+
+Most of the problems below have multiple parts.  In most cases, what is being asked for is clearly indicated by the explicit question(s) or request(s) (e.g., exercise 5 clearly asks you to show two different equations between scalar and vector notation hold).  Some exercises (e.g., exercise 6) have a flavor of a ``tutorial''.  For these problems, I add a (\$) for each part of the exercise that requires an explicit answer.  Each (\$) is worth an equal proportion of the total points for that exercise; e.g., exercise 6 is worth 5 points total and there are 10 (\$)s, so each is worth 0.5 points.
+
+In the following, FCMA refers to the course text: Simon Rogers and Mark Girolami (2012), {\em A First Course in Machine Learning}, first edition.  (All questions from the book are reproduced here in full, so you do not need the book to proceed.)
+
+For general notes on using latex to typeset math, see: {\tt http://en.wikibooks.org/wiki/LaTeX/Mathematics}
+
+{\bf Always start assignments ASAP, do {\em NOT} wait until the last couple of days.}
+
+\vspace{.5cm}
+
+%%%%%%%%%%%%%%%%
+%%%     Problems
+%%%%%%%%%%%%%%%%
+
+\newpage
 \begin{enumerate}
+
 
 %%%   Problem 1
 \item \label{prob:1} [0 points]
@@ -132,6 +168,8 @@ If python is new to you, work through the short python tutorial:\\
 \url{http://w3.sista.arizona.edu/~clayton/courses/ml/tutorial.html}
 
 See the Appendix at the end of these instructions for additional information about numpy, arrays and matrices.
+
+
 
 %%%   Problem 2
 \item \label{prob:2} [1 point]
@@ -145,9 +183,8 @@ See the Appendix at the end of these instructions for additional information abo
 \end{figure}
 By examining Figure 1.1 [from p. 2 of FCMA, reproduced here], estimate (by hand / in your head) the kind of values we should expect for $w_0$ (y-intercept) and $w_1$ (slope) as parameters of a line fit to the data (e.g., High? Low?  Positive?  Negative?).  (No computer or calculator calculation is needed here -- just estimate!)
 
-{\bf Solution.} 
+{\bf Solution.} $<$Solution goes here$>$\\
 
-I added a red line to the image above to indicate the kind of slope I would expect. Y intercept would be around 11.25, slope is ?.
 
 \newpage
 %%% Note for next three problems:
@@ -252,13 +289,7 @@ Knowing the (total) size is helpful, but in this case we are working with a 2-di
 
 {\em Hint: To store both the width and height into variables in one go, try: {\tt h, w = var.shape}.  This is an example of ``unpacking'', and you can even do this with nested patterns: {\tt a, (b, c) = [1, [2, 3]]}.  You could alternately do: {\tt h = var.shape[0]} and {\tt w = var.shape[1]}.}
 
-What is the range of values contained within the array?  Use the {\tt min} and {\tt max} functions to figure this out.  Have your script print the min and max values of the array (\$).
-
-{\em Hint: take a look at the related {\tt amin} and {\tt amax} functions for full documentation.}
-
-Use the {\tt min} and {\tt max} values to scale the values in your humu array so that they lie in the range $[0, 1]$ -- store this in a new array (\$).  Verify that the new, scaled array has the same dimensions as the original (print the shape!) but that the new values are in the range $[0, 1]$ (print the min and max of the new array!) (\$).
-
-You will now use matplotlib to plot the original (not the scaled) image.  To do so, you need to do the following:
+You will now use matplotlib to plot the image.  To do so, you need to do the following:
 \begin{enumerate}
 \item Add {\tt import matplotlib.pyplot as plt} to the top of your file.
 \item Add {\tt plt.figure()} to create a new figure object
@@ -278,79 +309,7 @@ Now make a grayscale image that is the same size as the one we have been using, 
 
 Write the uniformly random array to a file called `random.txt' using the numpy {\tt savetxt} function.  Confirm (1) that you can read the result by opening the file in a text editor, and (2) that you can load it back into another variable and display it to get the same image as before (\$).
 
-(For fun: Anyone know what `humu' is?  Give the full name!)
-
-\begin{figure}
-
-\centering
-  \includegraphics[width=\linewidth]{code/humu-color.png}
- \caption{Humu Color}
-\label{label}
-
-\end{figure}
-
-\begin{figure}
-
-\centering
-  \includegraphics[width=\linewidth]{code/humu-gray.png}
- \caption{Humu Greyscale}
-\label{label}
-
-\end{figure}
-
-{\bf Solution.}
-
-\begin{verbatim}
-import numpy as np
-import matplotlib.pyplot as plt
-
-dat = np.loadtxt("../data/humu.txt")
-print('type = {}'.format(type(dat)))
-print('size = {}'.format(dat.size))
-print('shape = {}'.format(dat.shape))
-print('max = {}'.format(dat.max()))  # also np.amax(dat)
-print('min = {}'.format(dat.min()))  # also np.amin(dat)
-
-scaled = dat / dat.max()
-print('scaled min = {} max = {} shape = {}'.format(scaled.min(),
-                                                   scaled.max(),
-                                                   scaled.shape))
-
-plt.figure()
-plt.imshow(dat)
-plt.show()
-
-print(plt.cm.cmapname)
-
-plt.imshow(dat, cmap='gray')
-plt.show()
-
-outfile = 'random.png'
-for _ in range(0, 2):
-    ran = np.random.random(dat.shape)
-    plt.imshow(ran)
-    plt.show()
-    np.savetxt(outfile, ran)
-
-ran1 = np.loadtxt(outfile)
-plt.imshow(ran1)
-plt.show()
-
-print('Done.')
-
-$ ./hw1.1.py
-type = <class 'numpy.ndarray'>
-size = 210816
-shape = (366, 576)
-max = 0.9450980392156862
-min = 0.0
-scaled min = 0.0 max = 1.0 shape = (366, 576)
-tab20c_r
-Done.
-
-\end{verbatim}
-
-\emph{The humuhumunukunukuapua’a is the reef trigger fish and the state fish of Hawai'i.}
+(For fun: Anyone know what `humu' refers to?  Give the full name!)
 
 \textbf{PART B}
 
@@ -372,98 +331,8 @@ Include these two plots, with appropriate captions, in your results (\$).
 
 {\em Note: the shapes of the original {\tt walk.txt} and {\tt walk\_scale01.txt} should be identical, but the y-axis ranges should reflect the original and scaled ranges.}
 
-{\bf Solution.} 
+{\bf Solution.} $<$Solution goes here$>$\\
 
-\begin{verbatim}
-#!/usr/bin/env python3
-
-"""
-walk.py - manipulate and plot "walk.txt"
-Ken Youens-Clark
-27 August 2018
-"""
-
-import numpy as np
-import matplotlib.pyplot as plt
-
-
-# --------------------------------------------------
-def main():
-    """
-    main()
-    """
-    dat = np.loadtxt('../data/walk.txt')
-    print('Data  : min "{:5}, max "{:5}", shape "{}"'.format(
-        dat.min(), dat.max(), dat.shape))
-
-    abs_min = np.abs(dat.min())
-    scaled = (dat + abs_min) / (dat.max() + abs_min)
-    print('Scaled: min "{:5}, max "{:5}", shape "{}"'.format(
-        scaled.min(), scaled.max(), scaled.shape))
-
-    outfile = '../data/walk_scale01.txt'
-    np.savetxt(outfile, scaled)
-    print('Scaled data saved to "{}"'.format(outfile))
-
-    plot_1d_array(arr=dat, title='Original', outfile='walk.png')
-    plot_1d_array(arr=scaled, title='Scaled', outfile='walk_scaled.png')
-
-
-# --------------------------------------------------
-def plot_1d_array(arr, title=None, outfile=None):
-    """
-    Plot a 1D array
-    :param: arr - a 1D Numpy array
-    :param: title - figure title (str)
-    :param: outfile - path to write image (str)
-
-    :return: void
-    """
-
-    plt.figure()
-    if title:
-        plt.title(title)
-    plt.plot(arr)
-
-    if outfile:
-        plt.savefig(outfile)
-        print('Wrote to "{}"'.format(outfile))
-
-    plt.show()
-
-
-# --------------------------------------------------
-if __name__ == '__main__':
-    main()
-
-$ ./walk.py
-Data  : min " -1.0, max "  5.0", shape "(200,)"
-Scaled: min "  0.0, max "  1.0", shape "(200,)"
-Scaled data saved to "../data/walk_scale01.txt"
-Wrote to "walk.png"
-Wrote to "walk_scaled.png"
-
-\end{verbatim}
-
-\begin{figure}
-
-\centering
-  \includegraphics[width=\linewidth]{code/walk.png}
- \caption{Plot of original walk data}
-\label{label}
-
-\end{figure}
-
-\begin{figure}
-
-\centering
-  \includegraphics[width=\linewidth]{code/walk_scaled.png}
- \caption{Plot of scaled walk}
-\label{label}
-
-\end{figure}
-
-\pagebreak
 
 %%%   Problem 7
 \item \label{prob:7} [1 point]
@@ -477,73 +346,6 @@ Modify your script from problem~\ref{prob:6} so that all of the code between loa
 
 {\em Tip: Python functions can also have {\bf optional} arguments; for example, we could have specified the exercise6 argument list as: {\tt exercise6(infile='humu.txt', outfile='out.txt')}}
 
-\begin{verbatim}
-
-def main():
-    """
-    main
-    :param: none
-    :return: void
-    """
-    exercise6("../data/humu.txt", "out.txt")
-
-def scale01(arr):
-    """
-    Linearly scale the values of an array in the range [0,1]
-    :param arr: input ndarray
-    :return: scaled ndarray
-    """
-    return arr / arr.max()
-    
-def exercise6(infile, outfile):
-    """
-    Read a file into a Numpy ndarray
-    :param infile: the file to read
-    :param outfile: where to write the output
-    :return: void
-    """
-    dat = np.loadtxt(infile)
-
-    scaled = scale01(dat)
-    print('scaled min = {} max = {} shape = {}'.format(scaled.min(),
-                                                       scaled.max(),
-                                                       scaled.shape))
-
-    plt.figure()
-    plt.imshow(dat)
-    plt.show()
-
-    print(plt.cm.cmapname)
-
-    plt.imshow(dat, cmap='gray')
-    plt.show()
-
-    for _ in range(0, 2):
-        ran = np.random.random(dat.shape)
-        plt.imshow(ran)
-        plt.show()
-        np.savetxt(outfile, ran)
-
-    ran1 = np.loadtxt(outfile)
-    plt.imshow(ran1)
-    plt.show()
-
-    print('Done.')
-
-if __name__ == '__main__':
-    main()
-
-$ ./hw1.py
-type = <class 'numpy.ndarray'>
-size = 210816
-shape = (366, 576)
-max = 0.9450980392156862
-min = 0.0
-scaled min = 0.0 max = 1.0 shape = (366, 576)
-tab20c_r
-Done.
-
-\end{verbatim}
 
 
 %%%   Problem 8
@@ -573,7 +375,7 @@ scale01(arr)
 
 Document your code (with inline comments) and provide function docstrings for each function you write in this homework (\$).
 
-\emph{Functions documented above}
+
 
 %%%   Problem 9
 \item \label{prob:9} [2 points]
@@ -589,72 +391,8 @@ Finally, set the seed to 8 a second time, rerun your estimation procedure 10 tim
 
 Explain why it is often important to have random number sequences that are not really random, and can be controlled (\$).
 
-{\bf Solution.} 
+{\bf Solution.} $<$Solution goes here$>$\\
 
-I wrote the following function:
-
-\begin{verbatim}
-def exercise9():
-    """
-    Estimate the randomness of throwing double-sixes
-    :param: none
-    :return: void
-    """
-
-    np.random.seed(seed=8)
-
-    throws = 1000
-    dbl6 = 0
-    for _ in range(0, throws):
-        (n1, n2) = np.random.randint(low=1, high=7, size=2, dtype=int)
-        #print('{} {}'.format(n1, n2))
-        if n1 == 6 and n2 == 6:
-            dbl6 += 1
-
-    print('Threw double-six {:.2}%'.format((dbl6 / throws) * 100))
-\end{verbatim}
-
-Everytime I run it, I get the same result, "2.6\%".
-
-\begin{verbatim}
-$ ./hw1.py
-Threw double-six 2.6%
-$ ./hw1.py
-Threw double-six 2.6%
-\end{verbatim}
-
-If I comment out {\tt seed=8}, I will get different results:
-
-\begin{verbatim}
-$ for i in $(seq 1 9); do echo -n "$i: " && ./hw1.py; done
-1: Threw double-six 2.7%
-2: Threw double-six 2.4%
-3: Threw double-six 3.4%
-4: Threw double-six 2.1%
-5: Threw double-six 2.6%
-6: Threw double-six 2.6%
-7: Threw double-six 2.3%
-8: Threw double-six 3.2%
-9: Threw double-six 3.2%
-\end{verbatim}
-
-Putting back in {\tt seed=8}, I go back to the same result:
-
-\begin{verbatim}
-$ for i in $(seq 1 10); do echo -n "$i: " && ./hw1.py; done
-1: Threw double-six 2.6%
-2: Threw double-six 2.6%
-3: Threw double-six 2.6%
-4: Threw double-six 2.6%
-5: Threw double-six 2.6%
-6: Threw double-six 2.6%
-7: Threw double-six 2.6%
-8: Threw double-six 2.6%
-9: Threw double-six 2.6%
-10: Threw double-six 2.6%
-\end{verbatim}
-
-Being able to count on a "random" number allows one to write tests for such functions.
 
 %%%   Problem 10
 \item \label{prob:10} [5 points] Random Numbers, Vectors, Matrices, and Operations
@@ -672,30 +410,7 @@ Followed by creating two three-dimensional column vectors using
 Here we're going to be explicit about the numpy arrays having 3 rows and 1 column dimension!
 Represent the random variables as $\mathbf{a}$ and $\mathbf{b}$ (be sure you issue the call to set the random seed immediately before creating these variables).  Print them at the terminal and copy-and-paste the result here. (If using \LaTeX, use the {\tt verbatim} environment to display). (\$)
 
-{\bf Solution~\ref{prob:10}a.} 
-
-\begin{verbatim}
-def exercise10a():
-    """
-    Print two three-dimensional column vectors
-    :param: none
-    :return: void
-    """
-
-    np.random.seed(seed=5)
-    a = np.random.rand(3, 1)
-    b = np.random.rand(3, 1)
-    print(a)
-    print(b)
-    
-$ ./hw1.py
-[[0.22199317]
- [0.87073231]
- [0.20671916]]
-[[0.91861091]
- [0.48841119]
- [0.61174386]]
-\end{verbatim}
+{\bf Solution~\ref{prob:10}a.} $<$Solution goes here$>$\\
 
 {\bf Part \ref{prob:10}b:} Using the values of $\mathbf{a}$ and $\mathbf{b}$, compute the following and display the result two ways: (1) copy-and-paste the output (from the python interpreter/terminal; again, in \LaTeX~use the {\tt verbatim} environment), (2) typeset the output (e.g., using the \LaTeX~math environment).
 \begin{enumerate}
@@ -704,47 +419,7 @@ $ ./hw1.py
 \item[3.] $\mathbf{a}^\top \mathbf{b} = ~?$  (also called the dot-product) ~~~(\$)
 \end{enumerate}
 
-{\bf Solution~\ref{prob:10}b.} 
-
-\begin{verbatim}
-def exercise10b():
-    """
-    Print two three-dimensional column vectors
-    :param: none
-    :return: void
-    """
-
-    np.random.seed(seed=5)
-    a = np.random.rand(3, 1)
-    b = np.random.rand(3, 1)
-    print("a\n {}".format(a))
-    print("b\n{}".format(b))
-    print("a + b\n{}".format(a + b))
-    print("a * b\n{}".format(a * b))
-    print("a . b\n{}".format(a.transpose().dot(b)))
-
-$ ./hw1.py
-a
- [[0.22199317]
- [0.87073231]
- [0.20671916]]
-b
-[[0.91861091]
- [0.48841119]
- [0.61174386]]
-a + b
-[[1.14060408]
- [1.35914349]
- [0.81846302]]
-a * b
-[[0.20392535]
- [0.4252754 ]
- [0.12645917]]
-a . b
-[[0.75565992]]
-\end{verbatim}
-
-
+{\bf Solution~\ref{prob:10}b.} $<$Solution goes here$>$\\
 
 {\bf Part \ref{prob:10}c:} Now, set the random seed to 2 and immediately generate a random $3 \times 3$ matrix $\mathbf{X}$.  In your solution, display the value of $\mathbf{X}$.  Using $\mathbf{X}$ and the earlier values of $a$ and $b$, compute the following in python and typeset the results in two ways, as before.
 \begin{enumerate}
@@ -753,110 +428,22 @@ a . b
 \item[6.] $\mathbf{X}^{-1} = ~?$ ~~~(\$)
 \end{enumerate}
 
-{\bf Solution~\ref{prob:10}c.} 
+{\bf Solution~\ref{prob:10}c.} $<$Solution goes here$>$\\
 
-\begin{verbatim}
-def exercise10c():
-    """
-    Vector/matrix manipulation
-    :param: none
-    :return: void
-    """
 
-    np.random.seed(seed=2)
-    X = np.asmatrix(np.random.rand(3, 3))
-    a = np.random.rand(3, 1)
-    b = np.random.rand(3, 1)
-    print("a\n {}".format(a))
-    print("b\n{}".format(b))
-    print("X\n{}".format(X))
-    print("aTX\n{}".format(a.transpose() * X))
-    print("aTXb\n{}".format(a.transpose() * X * b))
-    print("X-1\n{}".format(X.getI()))
-    
-$ ./hw1.py
-a
- [[0.26682728]
- [0.62113383]
- [0.52914209]]
-b
-[[0.13457995]
- [0.51357812]
- [0.18443987]]
-X
-[[0.4359949  0.02592623 0.54966248]
- [0.43532239 0.4203678  0.33033482]
- [0.20464863 0.61927097 0.29965467]]
-aTX
-[[0.495017   0.59570483 0.51040698]]
-aTXb
-[[0.46669972]]
-X-1
-[[-1.20936675  5.11771977 -3.42333228]
- [-0.96691719  0.279414    1.46561347]
- [ 2.82418088 -4.07257903  2.64627411]]
-\end{verbatim}
-
-\pagebreak
 
 %%%   Problem 11
 \item \label{prob:11} [3 points] Simple Plotting
 
 Use the provided python script {\tt plotlinear.py} and plot three lines (parameters of your choosing).  Place the output graphic in your pdf submission and provide a descriptive caption that indicates the intercept and slope values you used to generate the lines. (\$)
 
-{\bf Solution~\ref{prob:11}a.} 
-
-\emph{I can't seem to get the figure to show here.}
-\begin{figure}
-
-\centering
-  \includegraphics[width=\linewidth]{Figure_1.png}
- \caption{y = 3.5 + 8.0 x; y = 4.0 + 2.0 x; y = 8.0 + -2.0 x}
-\label{label}
-
-\end{figure}
-
-\begin{verbatim}
-y = 3.5 + 8.0 x
-y = 4.0 + 2.0 x
-y = 8.0 + -2.0 x
-\end{verbatim}
+{\bf Solution~\ref{prob:11}a.} $<$Solution goes here$>$\\
 
 Now, for another plot: create a function called exercise11 in hw1.py.  Add the following functionality:
 
 Generate a vector whose entries are the values of $\sin(\mathbf{x})$ for $\mathbf{x}$ in the range $[0,10]$ in steps of $0.01$, and plot it.  Make it so that the horizontal and vertical axes of the plot are labeled and include a plot title: label the y-axis `sin(x)', the x-axis 'x values' and provide a title for the plot, `Sine Function for x from 0.0 to 10.0' (look at pyplot xlabel, ylabel and title).  (In this course, you must {\bf always} label you plot axes!)  Include your plot in the pdf submission. (2\$)
 
-{\bf Solution~\ref{prob:11}b.} 
-
-\begin{figure}
-
-\centering
-  \includegraphics[width=\linewidth]{code/sine.png}
- \caption{Plot sin(x)}
-\label{label}
-
-\end{figure}
-
-\begin{verbatim}
-def exercise11():
-    """
-    Plotting
-    :param: none
-    :return: void
-    """
-
-    x = np.arange(0, 10, .01)
-    y = np.sin(2 * np.pi * x)
-    plt.plot(x, y)
-    plt.title('Sine Function for x from 0.0 to 10.0')
-    plt.xlabel('x values')
-    plt.ylabel('sin(x)')
-    plt.show()
-    plt.savefig('sine.png')
-\end{verbatim}
-
-
-
+{\bf Solution~\ref{prob:11}b.} $<$Solution goes here$>$\\
 
 \end{enumerate}
 
