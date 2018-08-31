@@ -121,11 +121,13 @@ Graduate
 
 \vspace{1cm}
 
+\emph{Note: I discussed problems 3-5 with TA Farig Sadeque and students Matthew Miller and Kai Blumberg.}
+
 \begin{enumerate}
 
 %%%   Problem 1
 \item \label{prob:1} [0 points]
-Python setup done.
+Python setup.
 
 %%%   Problem 2
 \item \label{prob:2} [1 point]
@@ -201,7 +203,8 @@ where
 \begin{eqnarray*}
 \mathbf{w}^\top\mathbf{X}^\top\mathbf{X} = 
 	\begin{bmatrix}
-	w_0{\sum_{n=1}^N x_{n1}^2} + w_1{\sum_{n=1}^N x_{n2} x_{n1}} & w_0{\sum_{n=1}^N x_{n1} x_{n2} + w_`{\sum_{n=1}^N x_{n2}^2}}
+	w_0{\sum_{n=1}^N x_{n1}^2} + w_1{\sum_{n=1}^N x_{n2} x_{n1}} & 
+	w_0{\sum_{n=1}^N x_{n1} x_{n2} + w_{\sum_{n=1}^N x_{n2}^2}}
 	\end{bmatrix}
 \end{eqnarray*}
 
@@ -215,12 +218,17 @@ where
 
 \begin{eqnarray*}
 \mathbf{w}^\top\mathbf{X}^\top\mathbf{X}\mathbf{w}  = 
-	w_0^2({\sum_{n=1}^N x_{n1}^2}) + w_0 w_1({\sum_{n=1}^N x_{n2} x_{n1}}) + w_0 w_1({\sum_{n=1}^N x_{n1} x_{n2}}) + w_1^2 ({\sum_{n=1}^N x_{n2}^2})
+	w_0^2   \left( {\sum_{n=1}^N x_{n1}^2}      \right) + 
+	w_0 w_1 \left( {\sum_{n=1}^N x_{n2} x_{n1}} \right) + 
+	w_0 w_1 \left( {\sum_{n=1}^N x_{n1} x_{n2}} \right) + 
+	w_1^2   \left( {\sum_{n=1}^N x_{n2}^2}      \right)
 \end{eqnarray*}
 
 \begin{eqnarray*}
 \mathbf{w}^\top\mathbf{X}^\top\mathbf{X}\mathbf{w}  = 
-	w_0^2({\sum_{n=1}^N x_{n1}^2}) + 2w_0 w_1({\sum_{n=1}^N x_{n1} x_{n2}}) + w_1^2 ({\sum_{n=1}^N x_{n2}^2})
+	w_0^2 \left( {\sum_{n=1}^N x_{n1}^2} \right) + 
+	2w_0 w_1 \left( {\sum_{n=1}^N x_{n1} x_{n2}} \right) + 
+	w_1^2 \left( {\sum_{n=1}^N x_{n2}^2} \right)
 \end{eqnarray*}
 
 
@@ -232,13 +240,9 @@ Using $\mathbf{w}$ and $\mathbf{X}$ as defined in the previous exercise, show th
 
 {\bf Solution.} 
 
+Given:
+
 \begin{eqnarray*}
-    \mathbf{w} = 
-    \begin{bmatrix}
-    w_0 \\[0.3em]
-    w_1
-    \end{bmatrix}
-    ,
 	\mathbf{X} = 
     \begin{bmatrix}
     x_{11} & x_{12} \\[0.3em]
@@ -248,20 +252,63 @@ Using $\mathbf{w}$ and $\mathbf{X}$ as defined in the previous exercise, show th
     x_{N1} & x_{N2}
     \end{bmatrix}
     ,
-    \mathbf{Xw} =
+    \mathbf{w} = 
     \begin{bmatrix}
-    {\sum_{n=1}^N w_0 x_{n1}} & {\sum_{n=1}^N w_0 x_{n2}} \\[0.3em]
-    {\sum_{n=1}^N w_1 x_{n1}} & {\sum_{n=1}^N w_1 x_{n2}}
+    w_0 \\[0.3em]
+    w_1
     \end{bmatrix}
 \end{eqnarray*}
 
-\begin{eqnarray*}    
+Then:
+
+\begin{eqnarray*}
+\begin{aligned}
+    \mathbf{Xw} &=
+    \begin{bmatrix} 
+    x_{11} w_0 + x_{12} w_1 \\
+    x_{21} w_0 + x_{22} w_1 \\
+    x_{31} w_0 + x_{32} w_1 \\
+    \dots \\
+    x_{N1} w_0 + x_{N2} w_1 \\
+    \end{bmatrix} 
+    \\
+    (\mathbf{Xw})^\top &=
+    \begin{bmatrix} 
+    x_{11} w_0 + x_{12} w_1 &
+    x_{21} w_0 + x_{22} w_1 &
+    x_{31} w_0 + x_{32} w_1 &
+    \dots &
+    x_{N1} w_0 + x_{N2} w_1 
+    \end{bmatrix} 
+\end{aligned}
+\end{eqnarray*}
+
+Given:
+
+\begin{eqnarray*}   
+	\mathbf{w}^\top = \begin{bmatrix} w_0 & w_1 \end{bmatrix}
+	,
     \mathbf{X}^\top = 
     \begin{bmatrix}
-    x_{11} & x_{12} & x_{13} & \dots & x_{1n} \\[0.3em]
-    x_{12} & x_{22} & x_{32} & \dots & x_{n2} \\[0.3em]
+    x_{11} & x_{21} & x_{31} & \dots & x_{N1} \\[0.3em]
+    x_{12} & x_{22} & x_{32} & \dots & x_{N2} \\[0.3em]
     \end{bmatrix}
 \end{eqnarray*}
+
+Then:
+
+\begin{eqnarray*}
+    \mathbf{w}^\top \mathbf{X}^\top = 
+    \begin{bmatrix} 
+    w_0 x_{11} + w_1 x_{12} &
+    w_0 x_{21} + w_1 x_{22} &
+    w_0 x_{31} + w_1 x_{32} &
+    \dots &
+    w_0 x_{N1} + w_1 x_{N2} &
+    \end{bmatrix}
+\end{eqnarray*}
+
+Therefore ${(\mathbf{X}\mathbf{w})}^\top = {\mathbf{w}}^\top{\mathbf{X}}^\top$
 
 %%%   Problem 5
 \item \label{prob:5} [2 points]
@@ -288,55 +335,24 @@ and
 
 {\bf Solution Part 1}
 
+Given: 
 \begin{eqnarray*}
-	\mathbf{t} =
+\begin{aligned}
+	\mathbf{t} &=
 	\begin{bmatrix}
 	t_1 \\
 	t_2 \\
 	\vdots \\
 	t_n
 	\end{bmatrix}
+	\\
+	\mathbf{X}^\top &= \begin{bmatrix} \mathbf{x}_1 & \mathbf{x}_2 & \mathbf{x}_3 & \dots & \mathbf{x}_N \end{bmatrix}
+	\\
+	\mathbf{X}^\top\mathbf{t} &= \mathbf{x}_1 t_1 + \mathbf{x}_2 t_2 + \mathbf{x}_3 t_3 \dots \mathbf{x}_N t_N
+	\\
+	&= \sum_n \mathbf{x}_n t_n
+\end{aligned}
 \end{eqnarray*}
-
-\begin{eqnarray*}
-	\mathbf{x_n} =
-	\begin{bmatrix}
-	x_{n1} \\
-	x_{n2} \\
-	\end{bmatrix}
-\end{eqnarray*}
-	
-\begin{eqnarray*}
-	\mathbf{X}^\top =
-	\begin{bmatrix}
-	x_{11} & x_{21} & x_{31} & \dots & x_{n1}\\
-	x_{21} & x_{22} & x_{32} & \dots & x_{n2}\\
-	\end{bmatrix}
-\end{eqnarray*}
-
-\begin{eqnarray*}
-	\mathbf{X}^\top\mathbf{t} =
-	\begin{bmatrix}
-	{\sum_{n=1}^N x_{n1} t_{n}}\\
-	{\sum_{n=1}^N x_{n2} t_{n}}\\
-	\end{bmatrix}
-\end{eqnarray*}
-
-\begin{eqnarray*}
-	\mathbf{X}^\top\mathbf{t}  =
-	{\sum_{n=1}^N t_{n}
-	\begin{bmatrix}
-	x_{n1} \\
-    x_{n2} \\
-	\end{bmatrix}}
-\end{eqnarray*}
-
-\begin{eqnarray*}
-	\mathbf{X}^\top\mathbf{t} =
-	{\sum_{n=1}^N \mathbf{x}_{n} t_{n}}
-\end{eqnarray*}
-
-\newpage
 
 {\bf Solution Part 2}
 
@@ -344,71 +360,48 @@ and
 \sum_{n} \mathbf{x}_n \mathbf{x}_n ^\top \mathbf{w} = \mathbf{X}^\top\mathbf{X} \mathbf{w}
 \end{eqnarray*}
 
-$\mathbf{w}$ is common to both sides, so drop it.
+Divide both sides by $\mathbf{w}$:
 
 \begin{eqnarray*}
 \sum_{n} \mathbf{x}_n \mathbf{x}_n ^\top = \mathbf{X}^\top\mathbf{X}
 \end{eqnarray*}
 
-\begin{eqnarray*}
-	\mathbf{x_n} =
-	\begin{bmatrix}
-	x_{n1} \\
-	x_{n2} \\
-	\end{bmatrix}
-	,
-	\mathbf{X} =
-    \begin{bmatrix}
-    {\mathbf{x}_{1}}^\top \\[0.3em]
-    {\mathbf{x}_{2}}^\top \\[0.3em]
-    \vdots \\[0.3em]
-    {\mathbf{x}_{N}}^\top
-    \end{bmatrix}
-\end{eqnarray*}
+Solve the right side given:
 
 \begin{eqnarray*}
-	\mathbf{X}^\top \mathbf{X} =
-	\begin{bmatrix}
-	x_{11} & x_{21} & x_{31} & \dots & x_{n1}\\
-	x_{21} & x_{22} & x_{32} & \dots & x_{n2}\\
-	\end{bmatrix}
-	*
-    \begin{bmatrix}
-	x_{11} & x_{12} \\
-	x_{21} & x_{22} \\
-	\vdots
-	x_{N1} & x_{N2} \\
-	\end{bmatrix}
-	=
-	\begin{bmatrix}
-	{\sum_{n=1}^N {x_{n1}}^2} \\
-	{\sum_{n=1}^N {x_{n2}}^2}
-	\end{bmatrix}
-	=
-	{\sum_{n=1}^N 
-	\begin{bmatrix}
-	x_{n1} \\
-	x_{n2}
-	\end{bmatrix}^2}
-	=
-	{\sum_{n=1}^N {x_n}^2}
+\begin{aligned}
+    \mathbf{X} &= 
+        \begin{bmatrix}
+        {\mathbf{x}_{1}}^\top \\
+        {\mathbf{x}_{2}}^\top \\
+        {\mathbf{x}_{3}}^\top \\
+        \vdots \\
+        {\mathbf{x}_{N}}^\top
+        \end{bmatrix}
+	\\
+	\mathbf{X}^\top &= \begin{bmatrix} \mathbf{x}_1 & \mathbf{x}_2 & \mathbf{x}_3 & \dots & \mathbf{x}_N \end{bmatrix}
+\end{aligned}
 \end{eqnarray*}
 
+Then:
+
 \begin{eqnarray*}
-	\sum_{n} \mathbf{x}_n \mathbf{x}_n ^\top 
-	= 
-    \sum_{n} \left( \begin{bmatrix} x_{n1} \\ x_{n2} \end{bmatrix} \begin{bmatrix} x_{n1} x_{n2} \end{bmatrix} \right) 
-    =
-    \sum_{n} \left( {x_{n1}}^2 {x_{n2}}^2 \right)
-	=
-	{\sum_{n}
+\begin{aligned}
+	\mathbf{X}^\top \mathbf{X} &=
 	\begin{bmatrix}
-	x_{n1} \\
-	x_{n2}
-	\end{bmatrix}^2}
-	=
-	{\sum_{n} {x_n}^2}
+	\mathbf{x}_{1} {\mathbf{x}_{1}}^\top +
+	\mathbf{x}_{2} {\mathbf{x}_{2}}^\top +
+	\mathbf{x}_{3} {\mathbf{x}_{3}}^\top +
+	\dots 
+	\mathbf{x}_{N} {\mathbf{x}_{N}}^\top
+	\end{bmatrix}
+	\\
+	&=
+	\sum_n \mathbf{x}_{n} {\mathbf{x}_{n}}^\top
+\end{aligned}
 \end{eqnarray*}
+
+Therefore $\sum_{n} \mathbf{x}_n \mathbf{x}_n ^\top = \mathbf{X}^\top\mathbf{X}$
 
 %%%   Problem 6
 \item \label{prob:6} [5 points]
