@@ -1,0 +1,33 @@
+Using Python 3.6.5 (Anaconda)
+
+1. Run "fitpoly.py -h" to get all command-line args:
+
+```
+$ ./fitpoly.py -h
+usage: fitpoly.py [-h] [-m int] [-t str] [-x str] [-y str] [-o str] [-s] [-q]
+                  FILE
+
+Find w-hat
+
+positional arguments:
+  FILE                  csv data file
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -m int, --model_order int
+                        Model order (default: 1)
+  -t str, --title str   Plot title (default: Data)
+  -x str, --xlabel str  X axis label (default: x)
+  -y str, --ylabel str  Y axis label (default: t)
+  -o str, --outfile str
+                        Save output to filename (default: None)
+  -s, --scale           Whether to scale the data (default: False)
+  -q, --quiet           Do not show debug messages (default: False)
+
+```
+
+The included Makefile has targets for mens, womens, and the synth data.
+
+2. Run "make womens"
+
+3. Run "make synth"
