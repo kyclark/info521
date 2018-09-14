@@ -16,4 +16,4 @@ womens:
 	./fitpoly.py womens100.csv -t "Women's 100" -x 'Year' -o womens.png
 
 cv:
-	./cv.py synthdata2018.csv -k 5 -k 7 -o synth_cv.png -r
+	./cv.py synthdata2018.csv -k 5 -m 7 -o synth_cv.png -n 5

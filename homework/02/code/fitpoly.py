@@ -1,5 +1,9 @@
 #!/usr/bin/env python3
-"""docstring"""
+"""
+Solution for ISTA 421 / INFO 521 Fall 2015, HW 2, Problem 1
+Author: Clayton T. Morrison, 12 September 2015
+        Ken Youens-Clark (Sept 2018)
+"""
 
 import argparse
 import logging
@@ -32,7 +36,7 @@ def get_args():
         help='Plot title',
         metavar='str',
         type=str,
-        default='Data')
+        default=None)
 
     parser.add_argument(
         '-x',
@@ -62,7 +66,10 @@ def get_args():
         '-s', '--scale', help='Whether to scale the data', action='store_true')
 
     parser.add_argument(
-        '-q', '--quiet', help='Do not show debug messages', action='store_true')
+        '-q',
+        '--quiet',
+        help='Do not show debug messages',
+        action='store_true')
 
     return parser.parse_args()
 
@@ -82,11 +89,14 @@ def main():
     logging.basicConfig(
         level=logging.CRITICAL if args.quiet else logging.DEBUG)
 
+    title = args.title if args.title else 'Fit to {} order'.format(
+        args.model_order)
+
     read_data_fit_plot(
         args.file,
         model_order=args.model_order,
         scale_p=args.scale,
-        plot_title=args.title,
+        plot_title=title,
         xlabel=args.xlabel,
         ylabel=args.ylabel,
         save_path=args.outfile,
@@ -237,6 +247,7 @@ def fitpoly(x, t, model_order):
     logging.debug('t.shape = {}'.format(t.shape))
 
     #w, res, rank, s = np.linalg.lstsq(X, t)
+    # w = (X^T . X)^-1 * (X^T . t)
     w = np.linalg.inv((X.transpose().dot(X))).dot(X.transpose().dot(t))
 
     logging.debug('w.shape = {}'.format(w.shape))
