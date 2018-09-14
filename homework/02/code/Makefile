@@ -1,3 +1,8 @@
+all: mens1 synth womens cv
+
+clean:
+	rm -f info521*.{aux,log,gz} *.png
+
 mens1:
 	./fitpoly.py mens100.csv -t "Men's 100 1st order" -x 'Year' -o mens-1.png 
 
