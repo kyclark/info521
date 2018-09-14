@@ -1,5 +1,3 @@
-.PHONY = womens
-
 mens1:
 	./fitpoly.py mens100.csv -t "Men's 100 1st order" -x 'Year' -o mens-1.png 
 

@@ -26,8 +26,10 @@ optional arguments:
 
 ```
 
-The included Makefile has targets for mens, womens, and the synth data.
+The included Makefile has targets for problems 2-4:
 
 2. Run "make womens"
 
 3. Run "make synth"
+
+4. Run "make cv"

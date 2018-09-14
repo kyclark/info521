@@ -142,6 +142,8 @@ Ken Youens-Clark
 Graduate
 \end{flushright}
 
+\emph{I conferred with students Matthew Miller and Kai Blumberg.}
+
 
 %%%%%%%%%%%%%%%%
 %%%     Problems
@@ -360,27 +362,27 @@ where the influence of each data point is controlled by its associated parameter
   \mathbf{t}^\top \mathbf{A} \mathbf{t} 
   - \mathbf{t}^\top \mathbf{A} \mathbf{X} \mathbf{w} 
   - \mathbf{w}^\top \mathbf{X}^\top \mathbf{A} \mathbf{t}
-  - \mathbf{w}^\top \mathbf{X}^\top \mathbf{A} \mathbf{X} \mathbf{w}
+  + \mathbf{w}^\top \mathbf{X}^\top \mathbf{A} \mathbf{X} \mathbf{w}
   \right)
 \\
 &= {1 \over N} \left(
   \mathbf{t}^\top \mathbf{A} \mathbf{t} 
   - 2 \mathbf{w}^\top \mathbf{X}^\top \mathbf{A} \mathbf{t}
-  - \mathbf{w}^\top \mathbf{X}^\top \mathbf{A} \mathbf{X} \mathbf{w}
+  + \mathbf{w}^\top \mathbf{X}^\top \mathbf{A} \mathbf{X} \mathbf{w}
   \right)
 \\
 &= {1 \over N} \mathbf{t}^\top \mathbf{A} \mathbf{t} 
   - {2 \over N}  \mathbf{w}^\top \mathbf{X}^\top \mathbf{A} \mathbf{t}
-  - {1 \over N} \mathbf{w}^\top \mathbf{X}^\top \mathbf{A} \mathbf{X} \mathbf{w}
+  + {1 \over N} \mathbf{w}^\top \mathbf{X}^\top \mathbf{A} \mathbf{X} \mathbf{w}
 \\
 \frac { \partial \mathcal{L}} {\partial \mathbf{w}} 
   &= - {2 \over N} \mathbf{X}^\top \mathbf{A} \mathbf{t} 
-  - {2 \over N} \mathbf{X}^\top \mathbf{A} \mathbf{X} \mathbf{w} = 0
+  + {2 \over N} \mathbf{X}^\top \mathbf{A} \mathbf{X} \mathbf{w} = 0
 \\
 \mathbf{X}^\top \mathbf{A} \mathbf{X} \mathbf{w}
-  &= - \mathbf{X}^\top \mathbf{A} \mathbf{t} 
+  &= \mathbf{X}^\top \mathbf{A} \mathbf{t} 
 \\
-\mathbf{I} \mathbf{w} &= (\mathbf{X}^\top \mathbf{A} \mathbf{X})^{-1} (- \mathbf{X}^\top \mathbf{A} \mathbf{t})
+\mathbf{I} \mathbf{w} &= (\mathbf{X}^\top \mathbf{A} \mathbf{X})^{-1}  (\mathbf{X}^\top \mathbf{A} \mathbf{t})
 \end{aligned}
 \end{eqnarray*}
 
