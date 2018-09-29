@@ -168,6 +168,24 @@ Modify the script {\tt approx\_expected\_value.py} to compute a sample-based app
 
 {\bf Solution.}
 
+\begin{eqnarray}
+\begin{aligned}
+p(x) &= \mathcal{U}(a,b) = \frac{1}{b-a} = \frac{1}{10 - (-4)} = \frac{1}{14}
+\\
+\mathbf{E}_{p(x)} \left\{ 35 + 3x - 0.5x^3 + 0.05x^4 \right\} 
+&= \int_{x=-4}^{10} 35 + 3x - 0.5x^3 + 0.05x^4 p(x) dx
+\\
+&= \int_{x=-4}^{10} \frac{35 + 3x - 0.5x^3 + 0.05x^4}{14} dx
+\\
+&= \left[ \frac{35x + \frac{3x^2}{2} - \frac{x^4}{8} + \frac{x^5}{25}}{14} \right]_{-4}^{10}
+\\
+&= \frac{65}{14} - \frac{67.8}{14}
+\\
+&= \frac{-2.8}{14}
+\\
+&= -0.2
+\end{aligned}
+\end{eqnarray}
 
 %%%     Problem 3
 \item[3.] [2 points; \boldred{Required only for Graduates}]
