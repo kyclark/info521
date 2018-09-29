@@ -7,19 +7,12 @@
 
 import numpy as np
 
-def p(y, lam):
-    return (np.power(lam, y) / np.math.factorial(y)) * np.exp(-1 * lam)
+lam = 7
+tot = 0
+for y in range(5,11):
+    r = (np.power(lam, y) / np.math.factorial(y)) * np.exp(-1 * lam)
+    print('y({:2}, {}) = {:.02f}'.format(y, lam, r))
+    tot += r
 
-def main():
-    lam = 7
-    tot = 0
-    for y in range(5,11):
-        r = p(y, lam)
-        print('y({}, {}) = {}'.format(y, lam, r))
-        tot += r
-
-    print('total = {}'.format(tot))
-
-
-if __name__ == '__main__':
-    main()
+print('--------   ----'.format(tot))
+print('total    = {:.02f}'.format(tot))

@@ -154,6 +154,38 @@ By using the fact that for a discrete random variable the pmf gives the probabil
 
 {\bf Solution.} %$<$Solution goes here$>$
 
+\begin{verbatim}
+#!/usr/bin/env python3
+#
+# INFO521 Homework 3 Problem #1 (Poisson pmf)
+# Author: Ken Youens-Clark
+# Sept 29, 2018
+#
+
+import numpy as np
+
+lam = 7
+tot = 0
+for y in range(5,11):
+    r = (np.power(lam, y) / np.math.factorial(y)) * np.exp(-1 * lam)
+    print('y({:2}, {}) = {:.02f}'.format(y, lam, r))
+    tot += r
+
+print('--------   ----'.format(tot))
+print('total    = {:.02f}'.format(tot))
+
+$ ./poisson.py
+y( 5, 7) = 0.13
+y( 6, 7) = 0.15
+y( 7, 7) = 0.15
+y( 8, 7) = 0.13
+y( 9, 7) = 0.10
+y(10, 7) = 0.07
+--------   ----
+total    = 0.73
+\end{verbatim}
+
+If $P(5 \leq Y \leq 10) = 0.73$, therefore $P(Y < 5$ or $Y > 10) = (1 - 0.73) = 0.27$
 
 %%%     Problem 2
 \item[2.] [3 points]

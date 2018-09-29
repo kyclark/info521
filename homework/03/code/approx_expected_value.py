@@ -84,7 +84,7 @@ plot_fn(y_fn, -4, 10, y_fn_name)
 # Now we'll approximate the area under the curve using sampling...
 
 # Sample 1000 uniformly random values in [0..1]
-ys = np.random.uniform(low=-4.0, high=10.0, size=1000)
+ys = np.random.uniform(low=-4.0, high=10.0, size=5000)
 # compute the expectation of y, where y is the function that squares its input
 ey2 = np.mean(np.power(ys, 2))
 print('\nSample-based approximation: {:f}'.format(ey2))
