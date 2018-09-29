@@ -84,7 +84,7 @@ plot_fn(y_fn, -4, 10, y_fn_name)
 # Now we'll approximate the area under the curve using sampling...
 
 # Sample 1000 uniformly random values in [0..1]
-ys = np.random.uniform(low=0.0, high=1.0, size=1000)
+ys = np.random.uniform(low=-4.0, high=10.0, size=1000)
 # compute the expectation of y, where y is the function that squares its input
 ey2 = np.mean(np.power(ys, 2))
 print('\nSample-based approximation: {:f}'.format(ey2))
@@ -104,10 +104,10 @@ plt.plot(sample_sizes, ey2_evol)
 # The true, analytic result of the expected value of f(y)=y^2 where y ~ U(0,1): $\frac{1}{3}$
 # plot the analytic expected result as a red line:
 plt.plot(np.array([sample_sizes[0], sample_sizes[-1]]),
-         np.array([1./3, 1./3]), color='r')
+         np.array([ey2, ey2]), color='r')
 plt.xlabel('Sample size')
 plt.ylabel('Approximation of expectation')
-plt.title('Approximation of expectation of $35 + 3x - 0.5x^3 + 0.05x^4$')
+plt.title('E $35 + 3x - 0.5x^3 + 0.05x^4$ ~= {:.02f}'.format(ey2))
 plt.pause(.1)  # required on some systems so that rendering can happen
 
 plt.show()  # keeps the plot open
