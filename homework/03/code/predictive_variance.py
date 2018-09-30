@@ -36,7 +36,7 @@ def calculate_prediction_variance(x_new, X, w, t):
     :return: the predictive variance around x_new
     """
     N = X.shape[0]
-    return 1 / N * np.dot(t.T, t) - np.dot(np.dot(t.T, X), w)
+    return 1 / N * (np.dot(t.T, t) - np.dot(np.dot(t.T, X), w))
 
 
 def calculate_cov_w(X, w, t):
@@ -147,7 +147,9 @@ for i in orders:
     plt.scatter(x, t, color='k', edgecolor='k')
     plt.xlabel('x')
     plt.ylabel('t')
-    plt.errorbar(testx, prediction_t, prediction_t_variance)
+
+    # TODO: fix!
+    plt.errorbar(testx, prediction_t, prediction_t_variance) 
 
     # find ylim plot bounds automagically...
     min_model = min(prediction_t - prediction_t_variance)
