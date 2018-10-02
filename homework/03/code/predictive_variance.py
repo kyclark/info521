@@ -47,7 +47,9 @@ def calculate_cov_w(X, w, t):
     :param t: vector of N target responses
     :return: the matrix covariance of w
     """
-    return None
+    N = X.shape[0]
+    sigma2_hat = 1 / N * (np.dot(t.T, t) - np.dot(np.dot(t.T, X), w))
+    return sigma2_hat * np.linalg.inv(np.dot(X.T, X))
 
 
 # --------------------------------------------------------------------------
@@ -174,58 +176,58 @@ for i in orders:
 # calculate_cov_w, above
 # --------------------------------------------------------------------------
 
-## Generate plots of functions whose parameters are sampled based on cov(\hat{w})
-#num_function_samples = 20
-#for i in orders:
-#    # create input representation for given model polynomial order
-#    X = np.zeros(shape=(x.shape[0], i+1))
-#    testX = np.zeros(shape=(testx.shape[0], i+1))
-#    for k in range(i + 1):
-#        X[:, k] = np.power(x, k)
-#        testX[:, k] = np.power(testx, k)
-#
-#    # fit model parameters
-#    w = np.dot(np.linalg.inv(np.dot(X.T, X)), np.dot(X.T, t))
-#
-#    # Sample functions with parameters w sampled from a Gaussian with
-#    # $\mu = \hat{\mathbf{w}}$
-#    # $\Sigma = cov(w)$
-#
-#    # determine cov(w)
-#    covw = calculate_cov_w(X, w, t)  # calculate the covariance of w
-#
-#    # The following samples num_function_samples of w from
-#    # multivariate Gaussian (normal) with covaraince covw
-#    wsamp = np.random.multivariate_normal(w, covw, num_function_samples)
-#
-#    # Calculate means for each function
-#    prediction_t = np.dot(testX, wsamp.T)
-#
-#    # Plot the data and functions
-#    plt.figure()
-#    plt.scatter(x, t, color='k', edgecolor='k')
-#    plt.xlabel('x')
-#    plt.ylabel('t')
-#    plt.plot(testx, prediction_t, color='b')
-#
-#    # find reasonable ylim bounds
-#    plt.xlim(xmin_remove-2, xmax_remove+2)  # (-2,4) # (-3, 3)
-#    min_model = min(prediction_t.flatten())
-#    max_model = max(prediction_t.flatten())
-#    min_testvar = min(min(t), min_model)
-#    max_testvar = max(max(t), max_model)
-#    plt.ylim(min_testvar, max_testvar)  # (-400,400)
-#
-#    ti = 'Plot of {0} functions where parameters '\
-#         .format(num_function_samples, i) + \
-#         r'$\widehat{\bf w}$ were sampled from' + '\n' + r'cov($\bf w$)' + \
-#         ' of model with polynomial order {1}' \
-#         .format(num_function_samples, i)
-#    plt.title(ti)
-#    plt.pause(.1)  # required on some systems so that rendering can happen
-#
-#    if SAVE_FIGURES:
-#        filename = 'sampled-fns-{0}.pdf'.format(i)
-#        plt.savefig(FIGURE_PATH + filename, fmt='pdf')
+# Generate plots of functions whose parameters are sampled based on cov(\hat{w})
+num_function_samples = 20
+for i in orders:
+    # create input representation for given model polynomial order
+    X = np.zeros(shape=(x.shape[0], i+1))
+    testX = np.zeros(shape=(testx.shape[0], i+1))
+    for k in range(i + 1):
+        X[:, k] = np.power(x, k)
+        testX[:, k] = np.power(testx, k)
+
+    # fit model parameters
+    w = np.dot(np.linalg.inv(np.dot(X.T, X)), np.dot(X.T, t))
+
+    # Sample functions with parameters w sampled from a Gaussian with
+    # $\mu = \hat{\mathbf{w}}$
+    # $\Sigma = cov(w)$
+
+    # determine cov(w)
+    covw = calculate_cov_w(X, w, t)  # calculate the covariance of w
+
+    # The following samples num_function_samples of w from
+    # multivariate Gaussian (normal) with covaraince covw
+    wsamp = np.random.multivariate_normal(w, covw, num_function_samples)
+
+    # Calculate means for each function
+    prediction_t = np.dot(testX, wsamp.T)
+
+    # Plot the data and functions
+    plt.figure()
+    plt.scatter(x, t, color='k', edgecolor='k')
+    plt.xlabel('x')
+    plt.ylabel('t')
+    plt.plot(testx, prediction_t, color='b')
+
+    # find reasonable ylim bounds
+    plt.xlim(xmin_remove-2, xmax_remove+2)  # (-2,4) # (-3, 3)
+    min_model = min(prediction_t.flatten())
+    max_model = max(prediction_t.flatten())
+    min_testvar = min(min(t), min_model)
+    max_testvar = max(max(t), max_model)
+    plt.ylim(min_testvar, max_testvar)  # (-400,400)
+
+    ti = 'Plot of {0} functions where parameters '\
+         .format(num_function_samples, i) + \
+         r'$\widehat{\bf w}$ were sampled from' + '\n' + r'cov($\bf w$)' + \
+         ' of model with polynomial order {1}' \
+         .format(num_function_samples, i)
+    plt.title(ti)
+    plt.pause(.1)  # required on some systems so that rendering can happen
+
+    if SAVE_FIGURES:
+        filename = 'sampled-fns-{0}.pdf'.format(i)
+        plt.savefig(FIGURE_PATH + filename, fmt='pdf')
 
 plt.show()
