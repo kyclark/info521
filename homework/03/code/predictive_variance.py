@@ -7,19 +7,20 @@
 # Predictive variance example
 # Ken Youens-Clark
 
-import numpy as np
 import matplotlib.pyplot as plt
+import numpy as np
+import os
 
 # --------------------------------------------------------------------------
 # Globals: edit these as needed
 # --------------------------------------------------------------------------
 
 # set to True in order to automatically save the generated plots
-SAVE_FIGURES = False
+SAVE_FIGURES = True
 
 # change this to where you'd like the figures saved
 # (relative to your python current working directory)
-FIGURE_PATH = '.'  # '../figs/'
+FIGURE_PATH = '.'
 
 # --------------------------------------------------------------------------
 # You must complete the implementation of the following two functions
@@ -35,9 +36,20 @@ def calculate_prediction_variance(x_new, X, w, t):
     :param x_new: new observation
     :return: the predictive variance around x_new
     """
-    N = X.shape[0]
-    return 1 / N * (np.dot(t.T, t) - np.dot(np.dot(t.T, X), w))
+    s2h = sigma2_hat(X, t, w)
+    XTX_inv = np.linalg.inv(np.dot(X.T, X))
 
+    return s2h * np.dot(x_new.T, np.dot(XTX_inv, x_new))
+
+def sigma2_hat(X, t, w):
+    """
+    Calculates sigma-squared-hat from
+    :param X: Design matrix: matrix of N observations
+    :param t: vector of N target responses
+    :param w: vector of parameters
+    """
+    N = X.shape[0]
+    return (1 / N) * (np.dot(t.T, t) - np.dot(np.dot(t.T, X), w))
 
 def calculate_cov_w(X, w, t):
     """
@@ -47,9 +59,7 @@ def calculate_cov_w(X, w, t):
     :param t: vector of N target responses
     :return: the matrix covariance of w
     """
-    N = X.shape[0]
-    sigma2_hat = 1 / N * (np.dot(t.T, t) - np.dot(np.dot(t.T, X), w))
-    return sigma2_hat * np.linalg.inv(np.dot(X.T, X))
+    return sigma2_hat(X, t, w) * np.linalg.inv(np.dot(X.T, X))
 
 
 # --------------------------------------------------------------------------
@@ -106,7 +116,7 @@ plt.title('Sampled data from {0}, $x \in [{1},{2}]$'.format(
 plt.pause(.1)  # required on some systems so that rendering can happen
 
 if SAVE_FIGURES:
-    plt.savefig(FIGURE_PATH + 'data.pdf', fmt='pdf')
+    plt.savefig(os.path.join(FIGURE_PATH, 'data.png'), fmt='png')
 
 # Fit models of various orders
 orders = [1, 3, 5, 9]
@@ -166,8 +176,8 @@ for i in orders:
     plt.pause(.1)  # required on some systems so that rendering can happen
 
     if SAVE_FIGURES:
-        filename = 'error-{0}.pdf'.format(i)
-        plt.savefig(FIGURE_PATH + filename, fmt='pdf')
+        filename = 'error-{0}.png'.format(i)
+        plt.savefig(os.path.join(FIGURE_PATH, filename), fmt='png')
 
 # --------------------------------------------------------------------------
 # Part 5c -- Plot functions by sampling from cov(\hat{w})
@@ -227,7 +237,7 @@ for i in orders:
     plt.pause(.1)  # required on some systems so that rendering can happen
 
     if SAVE_FIGURES:
-        filename = 'sampled-fns-{0}.pdf'.format(i)
-        plt.savefig(FIGURE_PATH + filename, fmt='pdf')
+        filename = 'sampled-fns-{0}.png'.format(i)
+        plt.savefig(os.path.join(FIGURE_PATH, filename), fmt='png')
 
 plt.show()

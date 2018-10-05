@@ -67,6 +67,8 @@ def main():
         plt.title('Model order {} prediction of {}, $x \in [{},{}]$'.format(
             i, true_function.__doc__, xmin, xmax))
         plt.pause(.1)  # required on some systems so that rendering can happen
+        outfile = 'model_bias-{}.png'.format(i)
+        plt.savefig(outfile, format='png')
         plt.show()
 
 
