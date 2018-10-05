@@ -109,33 +109,15 @@ Ken Youens-Clark
 Graduate 
 \end{flushright}
 
+N.B.: I consulted with graduate students Kai Blumberg and Matthew Miller.
+
 \vspace{1cm}
-{\Large {\bf Instructions}}
 
-In this assignment you are required to modify/write 3 scripts in python.  Details of what this will involve are specified in problems 2, 5 and 6, below.
-
-Included in the homework 3 release are following sample scripts:
-\begin{itemize}
-\item {\tt approx\_expected\_value.py} - This script demonstrates how to approximate an expected value through sampling.  You will modify this code and submit your solution for problem 2.
-\item {\tt predictive\_variance.py} - This script is partially implemented; you will need to fill in two functions (as described in problem 5).  When you run it, it demonstrates (a) generating and plotting error bars (predictive variance) and (b) sampling of model parameters from the $\cov\{\widehat{\mathbf{w}}\}$ estimated from data.  You will also use this script as the basis for a script you will write for problem 6.
-\item {\tt gauss\_surf.py} - This is provided for fun -- it is not required for any problem here.  It generates a 2d multivariate Gaussian and plots it as both a contour and surface plot.
-\item {\tt w\_variation\_demo.py} - This script is also provided for fun and is not required for the assignment. (It also provides more example python code!)  This implements the simulated experiment demonstrating the theoretical and empirical bias in the estimate, $\widehat{\sigma^2}$, of the model variance, $\sigma^2$, as a function of the sample size used for estimation.
-\end{itemize}
-
-All problems require that you provide some ``written'' answer (in some cases also figures), so you will also submit a .pdf of your written answers.  You can use \latex or any other system (including handwritten; plots, of course, must be program-generated) as long as the final version is in PDF.
-
-\boldred{The final submission will include (minimally) the two scripts and a PDF version of your written part of the assignment.  You are required to create either a .zip or tarball (.tar.gz / .tgz) archive of all of the files for your submission and submit your archive to the d2l dropbox by the date/time deadline above.}
-
-NOTE: Problems 3 and 7 are required for Graduate students only; Undergraduates may complete them for extra credit equal to the point value.
-
-(FCML refers to the course text: Rogers and Girolami (2016), {\em A First Course in Machine Learning, Second Edition}.  For general notes on using \latex to typeset math, see:\\ {\tt http://en.wikibooks.org/wiki/LaTeX/Mathematics})
-\vspace{.5cm}
 
 %%%%%%%%%%%%%%%%
 %%%     Problems
 %%%%%%%%%%%%%%%%
 
-\newpage
 \begin{itemize}
 
 %%%     Problem 1
@@ -322,9 +304,23 @@ Assume that a dataset of $N$ binary values, $x_1, ..., x_n$, was sampled from a 
 
 A Bernoulli is concerned with a particular sequence, so "HHTHH" which produces an outcome of one T.
 
-A Binomial considers all the possibilities of getting a particular outcome (e.g., one T): THHHH, HHHHT.
+A Binomial considers all the possibilities of getting a particular outcome (e.g., one T): "THHHH", "HTHHH" ... "HHHHT."
 
-If each sample is independent, then we're not thinking about all the different ways we could have gotten each particular sequence and therefore all the combinations of sequences that would produce the end results
+If each sample is independent, then we're not thinking about all the different ways we could have gotten each particular sequence and therefore all the combinations of sequences that would produce the end results. The result would be:
+
+\begin{eqnarray*}
+Bern(x|\mu) = \mu^x (1 - \mu)^{(1-x)}
+\\
+Bern(x_1) * Bern(x_2) * Bern(x_3) * ... Bern(x_n) = \prod_n^N Bern(x_n)
+\end{eqnarray*}
+
+Whereas a Binomial distribution incorporates an additional function to consider combinations (N choose m):
+
+\begin{eqnarray*}
+Bin(m|N,\mu) = {N \choose m} \mu^m (1 - \mu)^{(N-m)}
+\end{eqnarray*}
+
+MLE:
 
 \begin{eqnarray*}
 \begin{aligned}
@@ -338,23 +334,21 @@ P(X = x) &= q^x(1-q)^{1-x}
 \\
 &= \log q \sum_n^N  x_n + \log (1-q)^{\sum_n^N 1-{x_n}}
 \\
-\frac { \partial \log\mathcal{L}} {\partial q} &= \frac{\sum_n^N x}{q} + \frac{\sum_n^N 1 - x}{1 - q} = 0
+\frac { \partial \log\mathcal{L}} {\partial q} &= \frac{\sum_n^N x_n}{q} + \frac{\sum_n^N 1 - x_n}{1 - q} = 0
 \\
-\frac{\sum_n^N x}{q} &= - \frac{\sum_n^N 1-x}{1-q}
+\frac{\sum_n^N x_n}{q} &= - \frac{\sum_n^N 1-x_n}{1-q}
 \\
-(1-q)\sum_n^N x &= -q \sum_n^N (1-x)
+(1-q)\sum_n^N x_n &= -q \sum_n^N (1-x_n)
 \\
-(1-q)\sum_n^N x &= -q (N - \sum_n^N x)
+(1-q)\sum_n^N x_n &= -q (N - \sum_n^N x_n)
 \\
-\sum_n^N x - q \sum_n^N x &= -qN + q \sum_n^N x
+\sum_n^N x_n - q \sum_n^N x_n &= -qN  + q \sum_n^N x_n
 \\
-\sum_n^N x  &= -qN + 2q \sum_n^N x
+\sum_n^N x_n  &= -qN + 2q \sum_n^N x_n
 \\
-\sum_n^N x  &= -q(N - 2 \sum_n^N x)
+\sum_n^N x_n  &= q (2 \sum_n^N x_n - N)
 \\
-\frac{\sum_n^N x}{(N - 2 \sum_n^N x)}  &= -q
-\\
-q &= -\frac{\sum_n^N x}{2 \sum_n^N x - N}
+q &= \frac{\sum_n^N x_n}{2 \sum_n^N x_n - N}
 \end{aligned}
 \end{eqnarray*}
 
@@ -494,26 +488,50 @@ Compute the Fisher Information Matrix for the parameter of a Bernoulli distribut
 
 \begin{eqnarray*}
 \begin{aligned}
-\frac { \partial \log\mathcal{L}} {\partial q} &= \frac{\sum_n^N x}{q} + \frac{\sum_n^N 1 - x}{1 - q}
+P(x|q) &= q^x(1-q)^{1-x}
 \\
-&= q^{-1} \sum_n^N x + (1 - q)^{-1} \sum_n^N 1 - x
+\mathcal{L} &= \prod_n^N q^{x_n}(1-q)^{1-{x_n}}
 \\
-\frac { \partial^2 \log\mathcal{L}} {\partial q} &= - q^{-2} \sum_n^N x - (1 - q)^{-2} \sum_n^N 1 - x
+\log\mathcal{L} &= \sum_n^N \log \left( q^{x_n} (1-q)^{1-{x_n}} \right)
 \\
-\frac { \partial \log\mathcal{L}} {\partial q} &= \frac{x}{q} + \frac{1 - x}{1 - q} = 0
+\frac { \partial \log\mathcal{L}} {\partial q} &= \frac{\sum_n^N x_n}{q} + \frac{\sum_n^N 1 - x_n}{1 - q}
+= q^{-1} \sum_n^N x_n + (1 - q)^{-1} \sum_n^N 1 - x_n
 \\
-&= xq^{-1} + (1-x)(1-q)^{-1}
+\frac { \partial^2 \log\mathcal{L}} {\partial q} &= - q^{-2} \sum_n^N x_n - (1 - q)^{-2} \sum_n^N 1 - x_n
 \\
-\frac { \partial^2 \log\mathcal{L}} {\partial q} 
-&= -xq^{-2} - (1-x)(1-q)^{-2}
+\mathcal{I} &= \mathrm{E}_{P(x|q)} \{ - \frac { \partial^2 \log\mathcal{L}} {\partial q} \}
 \\
-\mathcal{I} &= - \frac { \partial^2 \log\mathcal{L}} {\partial q} 
-\\ 
-&= xq^{-2} + (1-x)(1-q)^{-2}
+\mathrm{E}_{P(x)} \{ f(X) \} &= \sum_x f(x) P(x)
+\\
+\mathcal{I} &= \sum_x - \frac { \partial^2 \log\mathcal{L}} {\partial q} P(x|q)
+\\
+P(x|q) &= (1 * q) + (0 * (1 - q)) = q
+\\
+\mathcal{I} &= \sum_x - \frac { \partial^2 \log\mathcal{L}} {\partial q} q
+\\
+&= -q \sum_x \frac { \partial^2 \log\mathcal{L}} {\partial q}
 \end{aligned}
 \end{eqnarray*}
 
+I think this is probably the answer. I hope I've sufficiently proven $P(x|q) = q$. I confess I do not understand how this is a matrix. Won't this be a scalar value in the end?
 
+I had done some additional distribution of terms which I'm not sure is necessary:
+
+\begin{eqnarray*}
+\begin{aligned}
+\mathcal{I} &= \sum_{x=n}^N \left[ - \left(- q^{-2} \sum_n^N x_n - (1 - q)^{-2} \sum_n^N 1 - x_n \right) q \right]
+\\
+&= \sum_{x=n}^N \left[ q \left( \frac{\sum_n^N x_n}{q^2} + \frac{\sum_n^N 1 - x_n}{(1 - q)^{2}} \right) \right]
+\\
+&= \sum_{x=n}^N \left[ q \left( \frac{\sum_n^N x_n}{q^2} + \frac{N - \sum_n^N x_n}{(1 - q)^{2}} \right) \right]
+\\
+&= \sum_{x=n}^N \left[ \frac{q \sum_n^N x_n}{q^2} + \frac{qN - q \sum_n^N x_n}{(1 - q)^{2}} \right]
+\\
+&= \sum_{x=n}^N \left[ \frac{\sum_n^N x_n}{q} + \frac{qN - q \sum_n^N x_n}{(1 - q)^{2}} \right]
+\end{aligned}
+\end{eqnarray*}
+
+I have no idea how to handle the outer summation over the inner summation or if I should be worried about using different subscripts. 
 \end{itemize}
 
 \end{document}
