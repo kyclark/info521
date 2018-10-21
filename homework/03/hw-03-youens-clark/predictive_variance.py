@@ -5,7 +5,7 @@
 # From A First Course in Machine Learning, Chapter 2.
 # Simon Rogers, 01/11/11 [simon.rogers@glasgow.ac.uk]
 # Predictive variance example
-# Ken Youens-Clark
+# Ken Youens-Clark 5 Oct 2018
 
 import matplotlib.pyplot as plt
 import numpy as np
@@ -22,11 +22,8 @@ SAVE_FIGURES = True
 # (relative to your python current working directory)
 FIGURE_PATH = '.'
 
-# --------------------------------------------------------------------------
-# You must complete the implementation of the following two functions
-# --------------------------------------------------------------------------
 
-
+# --------------------------------------------------
 def calculate_prediction_variance(x_new, X, w, t):
     """
     Calculates the variance for the prediction at x_new
@@ -41,6 +38,8 @@ def calculate_prediction_variance(x_new, X, w, t):
 
     return s2h * np.dot(x_new.T, np.dot(XTX_inv, x_new))
 
+
+# --------------------------------------------------
 def sigma2_hat(X, t, w):
     """
     Calculates sigma-squared-hat from
@@ -51,6 +50,8 @@ def sigma2_hat(X, t, w):
     N = X.shape[0]
     return (1 / N) * (np.dot(t.T, t) - np.dot(np.dot(t.T, X), w))
 
+
+# --------------------------------------------------
 def calculate_cov_w(X, w, t):
     """
     Calculates the covariance of w
@@ -68,11 +69,13 @@ def calculate_cov_w(X, w, t):
 # --------------------------------------------------------------------------
 
 
+# --------------------------------------------------
 def true_function(x):
     """$t = 5x+x^2-0.5x^3$"""
     return (5 * x) + x**2 - (0.5 * x**3)
 
 
+# --------------------------------------------------
 def sample_from_function(N=100, noise_var=1000, xmin=-5., xmax=5.):
     """ Sample data from the true function.
         N: Number of samples
@@ -161,7 +164,7 @@ for i in orders:
     plt.ylabel('t')
 
     # TODO: fix!
-    plt.errorbar(testx, prediction_t, prediction_t_variance) 
+    plt.errorbar(testx, prediction_t, prediction_t_variance)
 
     # find ylim plot bounds automagically...
     min_model = min(prediction_t - prediction_t_variance)
@@ -190,8 +193,8 @@ for i in orders:
 num_function_samples = 20
 for i in orders:
     # create input representation for given model polynomial order
-    X = np.zeros(shape=(x.shape[0], i+1))
-    testX = np.zeros(shape=(testx.shape[0], i+1))
+    X = np.zeros(shape=(x.shape[0], i + 1))
+    testX = np.zeros(shape=(testx.shape[0], i + 1))
     for k in range(i + 1):
         X[:, k] = np.power(x, k)
         testX[:, k] = np.power(testx, k)
@@ -221,7 +224,7 @@ for i in orders:
     plt.plot(testx, prediction_t, color='b')
 
     # find reasonable ylim bounds
-    plt.xlim(xmin_remove-2, xmax_remove+2)  # (-2,4) # (-3, 3)
+    plt.xlim(xmin_remove - 2, xmax_remove + 2)  # (-2,4) # (-3, 3)
     min_model = min(prediction_t.flatten())
     max_model = max(prediction_t.flatten())
     min_testvar = min(min(t), min_model)

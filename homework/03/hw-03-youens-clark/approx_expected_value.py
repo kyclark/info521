@@ -6,7 +6,7 @@
 # From A First Course in Machine Learning, Chapter 2.
 # Simon Rogers, 01/11/11 [simon.rogers@glasgow.ac.uk]
 # Approximating expected values via sampling
-# Ken Youens-Clark
+# Ken Youens-Clark 5 Oct 2018
 
 import argparse
 import matplotlib.pyplot as plt
