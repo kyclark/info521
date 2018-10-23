@@ -21,6 +21,7 @@
 % allow easy inclusion of .tif, .png graphics
 \DeclareGraphicsRule{.tif}{png}{.png}{`convert #1 `dirname #1`/`basename #1 .tif`.png}
 
+
 % \usepackage{subfigure}  % allows subfigures in figure
 \usepackage{caption}
 \usepackage{subcaption}
@@ -155,9 +156,9 @@ p(\mathbf{w}|\mu, \sigma^2) p(\sigma^2 | \alpha, \beta) &=
 \exp 
 \left\{ 
 -\frac{1}{2} 
-(\mathbf{t} - \mathbf{X}\mathbf{w})^\top 
+(\mathbf{X}\mathbf{w} - \mathbf{t})^\top 
 (\mathbf{\sigma}^2 \mathbf{I})^{-1} 
-(\mathbf{t} - \mathbf{X}\mathbf{w}) 
+(\mathbf{X}\mathbf{w}- \mathbf{t}) 
 \right\}
 \\
 &\times
@@ -171,18 +172,94 @@ p(\mathbf{w}|\mu, \sigma^2) p(\sigma^2 | \alpha, \beta) &=
 \frac{\beta^{\alpha}}{\Gamma(\alpha)} (\sigma^2)^{-\alpha-1}
 \right)
 \exp \left\{
--\frac{1}{2} (\mathbf{t} - \mathbf{X}\mathbf{w})^\top 
-(\mathbf{\sigma}^2 \mathbf{I})^{-1} (\mathbf{t} - \mathbf{X}\mathbf{w}) 
+-\frac{1}{2} (\mathbf{X}\mathbf{w}- \mathbf{t})^\top 
+(\mathbf{\sigma}^2 \mathbf{I})^{-1} (\mathbf{X}\mathbf{w} - \mathbf{t}) 
 -
 \frac{\beta}{\sigma^2} 
 \right\}
 \\
 &=
-\frac{\beta^{\alpha}}{\Gamma(\alpha)(2 \pi)^{N/2} | \mathbf{\sigma}^2 \mathbf{I}|^{1/2}}
+\left(
+\frac{1}{(2 \pi)^{N/2}} 
+\times \frac{1}{| \mathbf{\sigma}^2 \mathbf{I}|^{1/2}} 
+\times
+\frac{\beta^{\alpha}}{\Gamma(\alpha)}
+\times
 (\sigma^2)^{-\alpha-1}
+\right)
 \exp \left\{
--\frac{1}{2\sigma^2} (\mathbf{t} - \mathbf{X}\mathbf{w})^\top (\mathbf{t} - \mathbf{X}\mathbf{w})
+-\frac{1}{2\sigma^2} (\mathbf{X}\mathbf{w} - \mathbf{t})^\top (\mathbf{X}\mathbf{w} - \mathbf{t})
 - \frac{\beta}{\sigma^2}
+\right\}
+\\
+&=
+\left(
+\frac{1}{(2 \pi)^{N/2}} 
+\times \frac{1}{| \mathbf{\sigma}^2 \mathbf{I}|^{1/2}} 
+\times
+\frac{\beta^{\alpha}}{\Gamma(\alpha)}
+\times
+(\sigma^2)^{-\alpha-1}
+\right)
+\exp \left\{
+-\frac{1}{2\sigma^2} ((\mathbf{X}\mathbf{w})^\top - \mathbf{t}^\top) (\mathbf{X}\mathbf{w} - \mathbf{t})
+- \frac{\beta}{\sigma^2}
+\right\}
+\\
+&=
+\left(
+\frac{1}{(2 \pi)^{N/2}} 
+\times \frac{1}{| \mathbf{\sigma}^2 \mathbf{I}|^{1/2}} 
+\times
+\frac{\beta^{\alpha}}{\Gamma(\alpha)}
+\times
+(\sigma^2)^{-\alpha-1}
+\right)
+\exp \left\{
+-\frac{1}{2}
+\frac{
+((\mathbf{X}\mathbf{w})^\top \mathbf{X}\mathbf{w} 
+- 2 \mathbf{w}^\top \mathbf{X}^\top \mathbf{t}
++ \mathbf{t}^\top \mathbf{t}) - 2 \beta}
+{\sigma^2}
+\right\}
+\\
+&=
+\left(
+\frac{1}{|\mathbf{\sigma}^2 \mathbf{I}|^{1/2}} 
+\times
+(\sigma^2)^{-\alpha-1}
+\right)
+\exp \left\{
+- \frac{
+((\mathbf{X}\mathbf{w})^\top \mathbf{X}\mathbf{w} 
+- 2 \mathbf{w}^\top \mathbf{X}^\top \mathbf{t}
++ \mathbf{t}^\top \mathbf{t}) - 2 \beta}
+{2 \sigma^2}
+\right\}
+\\
+&=
+\left(
+\frac{(\sigma^2)^{-\alpha-1}}{\mathbf{\sigma}^{2D}} 
+\right)
+\exp \left\{
+- \frac{
+((\mathbf{X}\mathbf{w})^\top \mathbf{X}\mathbf{w} 
+- 2 \mathbf{w}^\top \mathbf{X}^\top \mathbf{t}
++ \mathbf{t}^\top \mathbf{t}) - 2 \beta}
+{2 \sigma^2}
+\right\}
+\\
+&=
+\left(
+(\sigma^2)^{-\alpha-1} \sigma^{-2D}
+\right)
+\exp \left\{
+- \frac{
+((\mathbf{X}\mathbf{w})^\top \mathbf{X}\mathbf{w} 
+- 2 \mathbf{w}^\top \mathbf{X}^\top \mathbf{t}
++ \mathbf{t}^\top \mathbf{t}) - 2 \beta}
+{2 \sigma^2}
 \right\}
 \end{aligned}
 \end{eqnarray*}
@@ -232,7 +309,95 @@ Given the expression for the area of a circle, $A = \pi r^2$, and {\em using onl
 
 {\bf Solution.} %$<$Solution goes here$>$
 
+\begin{verbatim}
+#!/usr/bin/env python3
+"""
+A circle of radius R is inscribed in a square with sides 2R.
+The area of the circle is pi*R^2 and the area of the square is (2R)^2 or 4R^2.
+Therefore the ratio of the areas is pi/4.
 
+To estimate pi, we will choose N samples from a uniform distribution
+in the radius of the circle (1). We can then use the Pythagorean theorem
+(a^2 + b^2 = c^2) (via the math.hypot function that computes Euclidean
+distance) to find the distance from the origin (0,0). If this
+is less than the radius squared (which is just one here), then the point
+falls within the circle. Multiple the number found to be within the circle
+by 4 and then divide by the number of samples to estimate pi.
+
+Cf. https://en.wikipedia.org/wiki/Approximations_of_%CF%80
+
+Author: Ken Youens-Clark
+Date: October 22, 2018
+"""
+
+import argparse
+import sys
+from random import random
+from math import hypot
+
+
+# --------------------------------------------------
+def get_args():
+    """get args"""
+    parser = argparse.ArgumentParser(
+        description='Estimate pi',
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter)
+
+    parser.add_argument(
+        '-n',
+        '--num_samples',
+        help='Number of samples',
+        metavar='int',
+        type=int,
+        default='1000000')
+
+    return parser.parse_args()
+
+
+# --------------------------------------------------
+def warn(msg):
+    """Print a message to STDERR"""
+    print(msg, file=sys.stderr)
+
+
+# --------------------------------------------------
+def die(msg='Something bad happened'):
+    """warn() and exit with error"""
+    warn(msg)
+    sys.exit(1)
+
+
+# --------------------------------------------------
+def main():
+    """Make a jazz noise here"""
+    args = get_args()
+    num_samples = args.num_samples
+
+    if num_samples < 1:
+        die('-n ({}) cannot be less than 1'.format(num_samples))
+
+    count = 0
+    for _ in range(0, num_samples):
+        x, y = random(), random()
+        if hypot(x, y) <= 1:
+            count += 1
+
+    print('pi ~ {:.06f}'.format(count * 4 / num_samples))
+
+
+# --------------------------------------------------
+if __name__ == '__main__':
+    main()
+    
+$ ./pi_sample_estimate.py
+pi ~ 3.138772
+$ ./pi_sample_estimate.py
+pi ~ 3.140552
+$ ./pi_sample_estimate.py
+pi ~ 3.141736
+$ ./pi_sample_estimate.py
+pi ~ 3.140920
+\end{verbatim}
 
 
 %%%     Problem 7

@@ -1,7 +1,19 @@
 #!/usr/bin/env python3
 """
-Estimate pi by sampling N points in a quarter of a unit circle
-and use Pythagorean theorem (a^2 + b^2 = c^2)
+A circle of radius R is inscribed in a square with sides 2R.
+The area of the circle is pi*R^2 and the area of the square is (2R)^2 or 4R^2.
+Therefore the ratio of the areas is pi/4.
+
+To estimate pi, we will choose N samples from a uniform distribution
+in the radius of the circle (1). We can then use the Pythagorean theorem
+(a^2 + b^2 = c^2) (via the math.hypot function that computes Euclidean
+distance) to find the distance from the origin (0,0). If this
+is less than the radius squared (which is just one here), then the point
+falls within the circle. Multiple the number found to be within the circle
+by 4 and then divide by the number of samples to estimate pi.
+
+Cf. https://en.wikipedia.org/wiki/Approximations_of_%CF%80
+
 Author: Ken Youens-Clark
 Date: October 22, 2018
 """
@@ -11,6 +23,7 @@ import sys
 from random import random
 from math import hypot
 
+
 # --------------------------------------------------
 def get_args():
     """get args"""
@@ -18,18 +31,22 @@ def get_args():
         description='Estimate pi',
         formatter_class=argparse.ArgumentDefaultsHelpFormatter)
 
-    parser.add_argument('-n', '--num_samples',
-                        help='Number of samples',
-                        metavar='int',
-                        type=int,
-                        default='1000000')
+    parser.add_argument(
+        '-n',
+        '--num_samples',
+        help='Number of samples',
+        metavar='int',
+        type=int,
+        default='1000000')
 
     return parser.parse_args()
+
 
 # --------------------------------------------------
 def warn(msg):
     """Print a message to STDERR"""
     print(msg, file=sys.stderr)
+
 
 # --------------------------------------------------
 def die(msg='Something bad happened'):
@@ -37,9 +54,10 @@ def die(msg='Something bad happened'):
     warn(msg)
     sys.exit(1)
 
+
 # --------------------------------------------------
 def main():
-    """main"""
+    """Make a jazz noise here"""
     args = get_args()
     num_samples = args.num_samples
 
@@ -52,7 +70,8 @@ def main():
         if hypot(x, y) <= 1:
             count += 1
 
-    print('pi ≃ {:.06f}'.format(count * 4 / num_samples))
+    print('pi ~ {:.06f}'.format(count * 4 / num_samples))
+
 
 # --------------------------------------------------
 if __name__ == '__main__':
