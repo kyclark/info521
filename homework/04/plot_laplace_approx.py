@@ -31,10 +31,23 @@ def get_args():
         '-b', '--beta', help='beta value', metavar='int', type=int, default=5)
 
     parser.add_argument(
-        '-n', help='n value', metavar='int', type=int, default=20)
+        '-n',
+        '--num_samples',
+        help='n value',
+        metavar='int',
+        type=int,
+        default=20)
 
     parser.add_argument(
-        '-y', help='y value', metavar='int', type=int, default=10)
+        '-y', '--num_y', help='y value', metavar='int', type=int, default=10)
+
+    parser.add_argument(
+        '-o',
+        '--outfile',
+        help='Output file',
+        metavar='str',
+        type=str,
+        default=None)
 
     parser.add_argument(
         '-d', '--debug', help='Talk about (pop music)', action='store_true')
@@ -56,40 +69,54 @@ def die(msg='Something bad happened'):
 
 
 # --------------------------------------------------
-def laplace(alpha, beta, y, n):
-    r_hat = (1 - y + alpha) / (n - (2 * y) - alpha + beta)
-    print('r_hat = {}'.format(r_hat))
-    t1 = ((1 - y - alpha) / np.power(r_hat, 2))
-    t2 = (n - y + beta - 1) / np.power(r_hat - 1, 2)
-    d2 = t1 - t2
-    return r_hat, -1 * d2
-
-# --------------------------------------------------
 def main():
     """main"""
     args = get_args()
     alpha_val = args.alpha
     beta_val = args.beta
-    n_val = args.n
-    y_val = args.y
+    n_val = args.num_samples
+    y_val = args.num_y
+    out_file = args.outfile
+
+    def debug(msg):
+        if args.debug:
+            warn(msg)
+
+    debug('α = {} β = {} N = {} y = {}'.format(alpha_val, beta_val, n_val,
+                                               y_val))
+    r_hat = (1 - y_val - alpha_val) / (2 - alpha_val - n_val - beta_val)
+    debug('r_hat = {}'.format(r_hat))
+
+    t1 = (y_val + alpha_val - 1) / np.power(r_hat, 2)
+    t2 = (n_val - y_val + beta_val - 1) / np.power((1 - r_hat), 2)
+    d2 = (-1 * t1) - t2
+    sigma = -1 / d2
+    debug('d2 = {}'.format(d2))
+    debug('sigma = {}'.format(sigma))
 
     beta_dist = beta(alpha_val, beta_val)
     x = np.linspace(0, 1, n_val)
 
     plt.figure()
-    plt.plot(x, beta_dist.pdf(x))
+    plt.plot(x, beta_dist.pdf(x), 'blue')
 
-    r_hat, sigma = laplace(alpha_val, beta_val, y_val, n_val)
-    normal_dist = norm.pdf(x, loc=r_hat, scale=sigma)
-    plt.plot(x, normal_dist.pdf(x))
+    debug(norm.pdf(x, loc=r_hat, scale=sigma))
+    plt.plot(x, norm.pdf(x, loc=r_hat, scale=sigma), 'red')
 
-    #mu = alpha_val / (alpha_val + beta_val)
-    #plt.plot(mu, beta_dist.pdf(mu), 'bo')
-
-    plt.xlabel('$\mu$')
+    plt.xlabel('x')
     plt.ylabel('y')
-    plt.title(r'Beta pdf for $\alpha$ = {} $\beta$ = {}'.format(
-        alpha_val, beta_val))
+
+    tmpl = r'Laplace approx for $\alpha$ = {} $\beta$ = {}, N = {}, y = {}'
+    title = tmpl.format(alpha_val, beta_val, n_val, y_val)
+    plt.title(title)
+
+    if out_file:
+        ext = '.png'
+        if not out_file.endswith(ext):
+            out_file += ext
+
+        plt.savefig(out_file, fmt='png')
+
     plt.show()
 
 

@@ -310,30 +310,33 @@ f &= p(r|\alpha, \beta) p(y|r,N)
 \log(f) &= \log(r)(\delta - 1) + \log(1 - r)(\gamma - 1)
 \\
 \frac{\partial \log(f)}{\partial r} 
-&= \frac{\delta - 1}{r} + \frac{\gamma - 1}{1 - r} = 0
+&= \frac{\delta - 1}{r} - \frac{\gamma - 1}{1 - r} = 0
 \\
-\frac{\delta - 1}{r} &= -\frac{\gamma - 1}{1 - r}
+\frac{\delta - 1}{r} &= \frac{\gamma - 1}{1 - r}
 \\
-(1 - r)(\delta - 1) &= -r(\gamma - 1)
+(\delta - 1)(1-r) &= r(\gamma - 1)
 \\
-\delta - 1 - r \delta + r &= r - r \gamma
+\delta - r\delta - 1 + r &= r\gamma - r
 \\
-r \gamma - r \delta &= 1 - \delta
+2r - r\delta - r\gamma &= 1 - \delta 
 \\
-r (\gamma - \delta) &= 1 - \delta
+r(2 - \delta - \gamma) &= 1 - \delta
 \\
-\hat{r} &= \frac{1 - \delta}{\gamma - \delta} 
+\hat{r} &= \frac{1 - \delta}{2 - \delta - \gamma} 
 \\
-\hat{r} &= \frac{1 - (y_N + \alpha)}{(N - y_N + \beta) - (y_N + \alpha)}
+\hat{r} &= \frac{1 - (y_N + \alpha)}{ 2 - (y_N + \alpha) - (N - y_N + \beta)}
 \\
-\hat{r} &= \frac{1 - y_N - \alpha}{N - 2 y_N - \alpha + \beta}
+\hat{r} &= \frac{1 - y_N - \alpha}{ 2 - y_N - \alpha - N + y_N - \beta}
 \\
-\frac{\partial \log(f)}{\partial r} &= r^{-1}(\delta - 1) + (1 - r)^{-1}(\gamma - 1) = 0
+\hat{r} &= \frac{1 - y_N - \alpha}{ 2 - \alpha - N - \beta}
+\\
+\frac{\partial \log(f)}{\partial r} &= \frac{\delta - 1}{r} - \frac{\gamma - 1}{1 - r}
+\\
+&= r^{-1}(\delta - 1) - (1 - r)^{-1}(\gamma - 1)
 \\
 \frac{\partial^2 \log(f)}{\partial r} 
-&= r^{-2}(1 - \delta) - (r - 1)^{-2}(\gamma - 1)
-\\
-&= \frac{1 - (y_N + \alpha)}{r^2} - \frac{(N - y_N + \beta - 1)}{(r - 1)^2}
+&= - r^{-2}(\delta - 1) - (1 - r)^{-2}(\gamma - 1)\\
+&= - \frac{y_N + \alpha - 1}{r^2} - \frac{(N - y_N + \beta - 1)}{(1-r)^2}
 \end{aligned}
 \end{eqnarray*}
 
@@ -465,7 +468,7 @@ pi ~ 3.140920
 \end{verbatim}
 
 
-%%%     Problem 7
+%%%     Problem 5
 \item[5.]  [6 points]
 Adapted from {\bf Exercise 4.6} of FCMA p.164:
 
@@ -485,6 +488,43 @@ The following facts will help in the derivation.  First, keep in mind that altho
 
 {\bf Solution.} %$<$Solution goes here$>$
 
+\begin{eqnarray*}
+\begin{aligned}
+p(t_n | \mathbf{x}_n, \mathbf{w}) &= \frac{(\mathbf{w}^\top\mathbf{x}_n)^{t_n} 
+\exp \{ - \mathbf{w}^\top\mathbf{x}_n  \}}{t_n!}
+\\
+\log(p) &= t_n \log(\mathbf{w}^\top \mathbf{x}_n) + (-\mathbf{w}^\top \mathbf{x}_n) - \log(t_n!)
+\\
+\frac{\partial \log(p)}{\partial \mathbf{w}} 
+&= t_n \mathbf{x}_n (\mathbf{w}^\top \mathbf{x}_n)^{-1} - \mathbf{x}_n
+\\
+\frac{\partial^2 \log(p)}{\partial \mathbf{w} \partial \mathbf{w}^\top } &=
+-( t_n \mathbf{x}_n^\top \mathbf{x}_n ( \mathbf{w}^\top \mathbf{x}_n)^{-2})
+\end{aligned}
+\end{eqnarray*}
+
+(a)  Widrow-Hoff update:
+\begin{eqnarray*}
+\begin{aligned}
+w_{n+1} &:= w_n + \alpha (\frac{\partial \log(p)}{\partial \mathbf{w}})
+\\
+&:= w_n + \alpha (t_n \mathbf{x}_n (\mathbf{w}^\top \mathbf{x}_n)^{-1} - \mathbf{x}_n
+)
+\end{aligned}
+\end{eqnarray*}
+
+(b)  Newton-Raphson update:
+\begin{eqnarray*}
+\begin{aligned}
+w_{n+1} &:= w_n - 
+\frac{t_n \mathbf{x}_n (\mathbf{w}^\top \mathbf{x}_n)^{-1} - \mathbf{x}_n}
+{-( t_n \mathbf{x}_n^\top \mathbf{x}_n ( \mathbf{w}^\top \mathbf{x}_n)^{-2})}
+\\
+&:= w_n +
+\frac{t_n \mathbf{x}_n (\mathbf{w}^\top \mathbf{x}_n)^{-1} - \mathbf{x}_n}
+{t_n \mathbf{x}_n^\top \mathbf{x}_n ( \mathbf{w}^\top \mathbf{x}_n)^{-2}}
+\end{aligned}
+\end{eqnarray*}
 
 \end{itemize}
 
