@@ -2,7 +2,7 @@
 """
 Author : kyclark
 Date   : 2018-10-25
-Purpose: Plot Laplace estimation
+Purpose: Plot Laplace estimation of beta distribution
 """
 
 import argparse
@@ -16,7 +16,7 @@ from scipy.stats import beta, norm
 def get_args():
     """get args"""
     parser = argparse.ArgumentParser(
-        description='Plot Laplace estimation',
+        description='Plot Laplace estimation of beta distribution',
         formatter_class=argparse.ArgumentDefaultsHelpFormatter)
 
     parser.add_argument(
@@ -51,6 +51,9 @@ def get_args():
 
     parser.add_argument(
         '-d', '--debug', help='Talk about (pop music)', action='store_true')
+
+    parser.add_argument(
+        '-N', '--no_viz', help='Do not show pictures', action='store_true')
 
     return parser.parse_args()
 
@@ -100,13 +103,13 @@ def main():
     plt.figure()
     plt.plot(x, beta_dist.pdf(x), 'blue')
 
-    debug(norm.pdf(x, loc=r_hat, scale=sigma))
+    debug(norm.pdf(x, loc=r_hat, scale=np.sqrt(sigma)))
     plt.plot(x, norm.pdf(x, loc=r_hat, scale=np.sqrt(sigma)), 'red')
 
     plt.xlabel('x')
     plt.ylabel('y')
 
-    tmpl = r'Laplace approx for $\alpha$ = {} $\beta$ = {}, N = {}, y = {}'
+    tmpl = r'Laplace approx for $\alpha$ = {}, $\beta$ = {}, N = {}, y = {}'
     title = tmpl.format(alpha_val, beta_val, n_val, y_val)
     plt.title(title)
 
@@ -117,7 +120,8 @@ def main():
 
         plt.savefig(out_file, fmt='png')
 
-    plt.show()
+    if not args.no_viz:
+        plt.show()
 
 
 # --------------------------------------------------
