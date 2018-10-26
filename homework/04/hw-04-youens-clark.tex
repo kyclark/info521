@@ -216,11 +216,10 @@ p(\mathbf{w}|\mu, \sigma^2) p(\sigma^2 | \alpha, \beta) &=
 (\sigma^2)^{-\alpha-1}
 \right)
 \exp \left\{
--\frac{1}{2}
 \frac{
-((\mathbf{X}\mathbf{w})^\top \mathbf{X}\mathbf{w} 
+-\frac{1}{2}((\mathbf{X}\mathbf{w})^\top \mathbf{X}\mathbf{w} 
 - 2 \mathbf{w}^\top \mathbf{X}^\top \mathbf{t}
-+ \mathbf{t}^\top \mathbf{t}) - 2 \beta}
++ \mathbf{t}^\top \mathbf{t}) - \beta}
 {\sigma^2}
 \right\}
 \\
@@ -231,36 +230,55 @@ p(\mathbf{w}|\mu, \sigma^2) p(\sigma^2 | \alpha, \beta) &=
 (\sigma^2)^{-\alpha-1}
 \right)
 \exp \left\{
-- \frac{
-((\mathbf{X}\mathbf{w})^\top \mathbf{X}\mathbf{w} 
-- 2 \mathbf{w}^\top \mathbf{X}^\top \mathbf{t}
-+ \mathbf{t}^\top \mathbf{t}) - 2 \beta}
-{2 \sigma^2}
+\frac{
+- \frac{1}{2}((\mathbf{X}\mathbf{w})^\top \mathbf{X}\mathbf{w}) 
++ \mathbf{w}^\top \mathbf{X}^\top \mathbf{t}
+- \frac{1}{2} \mathbf{t}^\top \mathbf{t} - \beta}
+{\sigma^2}
 \right\}
 \\
 &=
 \left(
-\frac{(\sigma^2)^{-\alpha-1}}{\mathbf{\sigma}^{2D}} 
+\frac{(\sigma^2)^{-\alpha-1}}{(\sigma^2)^{D/2}}
 \right)
 \exp \left\{
-- \frac{
-((\mathbf{X}\mathbf{w})^\top \mathbf{X}\mathbf{w} 
-- 2 \mathbf{w}^\top \mathbf{X}^\top \mathbf{t}
-+ \mathbf{t}^\top \mathbf{t}) - 2 \beta}
-{2 \sigma^2}
+\frac{
+- \frac{1}{2}((\mathbf{X}\mathbf{w})^\top \mathbf{X}\mathbf{w}) 
++ \mathbf{w}^\top \mathbf{X}^\top \mathbf{t}
+- \frac{1}{2} \mathbf{t}^\top \mathbf{t} - \beta}
+{\sigma^2}
 \right\}
 \\
 &=
 \left(
-(\sigma^2)^{-\alpha-1} \sigma^{-2D}
+(\sigma^2)^{-\alpha-1} (\sigma^2)^{-D/2}
 \right)
 \exp \left\{
-- \frac{
-((\mathbf{X}\mathbf{w})^\top \mathbf{X}\mathbf{w} 
-- 2 \mathbf{w}^\top \mathbf{X}^\top \mathbf{t}
-+ \mathbf{t}^\top \mathbf{t}) - 2 \beta}
-{2 \sigma^2}
+\frac{
+- \frac{1}{2}((\mathbf{X}\mathbf{w})^\top \mathbf{X}\mathbf{w}) 
++ \mathbf{w}^\top \mathbf{X}^\top \mathbf{t}
+- \frac{1}{2} \mathbf{t}^\top \mathbf{t} - \beta}
+{\sigma^2}
 \right\}
+\\
+&=
+\left(
+(\sigma^2)^{(-\alpha - D/2 - 1)}
+\right)
+\exp \left\{
+\frac{
+- \frac{1}{2}((\mathbf{X}\mathbf{w})^\top \mathbf{X}\mathbf{w}) 
++ \mathbf{w}^\top \mathbf{X}^\top \mathbf{t}
+- \frac{1}{2} \mathbf{t}^\top \mathbf{t} - \beta}
+{\sigma^2}
+\right\}
+\\
+\hat{\alpha} &= \alpha + D/2
+\\
+\hat{\beta} &=
+- \frac{1}{2}((\mathbf{X}\mathbf{w})^\top \mathbf{X}\mathbf{w}) 
++ \mathbf{w}^\top \mathbf{X}^\top \mathbf{t}
+- \frac{1}{2} \mathbf{t}^\top \mathbf{t} - \beta
 \end{aligned}
 \end{eqnarray*}
 
@@ -279,8 +297,47 @@ p(y | r, N) = {N \choose y} r^{y} (1 - r)^{N-y} ~,
 {\bf compute the Laplace approximation to the posterior}.  (Note, you should be able to obtain a closed-form solution for the MAP value, $\hat{r}$, by getting the log posterior, differentiating (with respect to $r$), equating to zero and solving for $r$.)
 
 {\bf Solution.}
+\begin{eqnarray*}
+\begin{aligned}
+f &= p(r|\alpha, \beta) p(y|r,N) 
+\\
+&\propto r^{\alpha + y_N - 1}(1 -r)^{\beta + N - y_N - 1}
+\\
+&\propto r^{\delta - 1}(1 -r)^{\gamma - 1}
+\\
+\log(f) &= \log(r)(\delta - 1) + \log(1 - r)(\gamma - 1)
+\\
+\frac{\partial \log(f)}{\partial r} 
+&= \frac{\delta - 1}{r} + \frac{\gamma - 1}{1 - r} = 0
+\\
+\frac{\delta - 1}{r} &= -\frac{\gamma - 1}{1 - r}
+\\
+(1 - r)(\delta - 1) &= -r(\gamma - 1)
+\\
+\delta - 1 - r \delta + r &= r - r \gamma
+\\
+r \gamma - r \delta &= 1 - \delta
+\\
+r (\gamma - \delta) &= 1 - \delta
+\\
+r &= \frac{1 - \delta}{\gamma - \delta}
+\\
+\frac{\partial \log(f)}{\partial r} &= r^{-1}(\delta - 1) + (1 - r)^{-1}(\gamma - 1) = 0
+\\
+\frac{\partial^2 \log(f)}{\partial r} 
+&= r^{-2}(1 - \delta) - (r - 1)^{-2}(\gamma - 1)
+\end{aligned}
+\end{eqnarray*}
 
+The Laplace approximation is a $\mathcal{N}(\mu, \Sigma)$ where
 
+\begin{eqnarray*}
+\begin{aligned}
+\mu &=  \frac{1 - \delta}{\gamma - \delta}
+\\
+\Sigma^{-1} &= -(r^{-2}(1 - \delta) - (r - 1)^{-2}(\gamma - 1))
+\end{aligned}
+\end{eqnarray*}
 
 
 %%%     Problem 3
