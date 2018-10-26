@@ -101,7 +101,7 @@ def main():
     plt.plot(x, beta_dist.pdf(x), 'blue')
 
     debug(norm.pdf(x, loc=r_hat, scale=sigma))
-    plt.plot(x, norm.pdf(x, loc=r_hat, scale=sigma), 'red')
+    plt.plot(x, norm.pdf(x, loc=r_hat, scale=np.sqrt(sigma)), 'red')
 
     plt.xlabel('x')
     plt.ylabel('y')
