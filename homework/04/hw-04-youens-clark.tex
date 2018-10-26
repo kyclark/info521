@@ -305,6 +305,8 @@ f &= p(r|\alpha, \beta) p(y|r,N)
 \\
 &\propto r^{\delta - 1}(1 -r)^{\gamma - 1}
 \\
+&\text{where $\delta = y_N + \alpha$ and $\gamma = N - y_N + \beta$}
+\\
 \log(f) &= \log(r)(\delta - 1) + \log(1 - r)(\gamma - 1)
 \\
 \frac{\partial \log(f)}{\partial r} 
@@ -320,22 +322,28 @@ r \gamma - r \delta &= 1 - \delta
 \\
 r (\gamma - \delta) &= 1 - \delta
 \\
-r &= \frac{1 - \delta}{\gamma - \delta}
+\hat{r} &= \frac{1 - \delta}{\gamma - \delta} 
+\\
+\hat{r} &= \frac{1 - (y_N + \alpha)}{(N - y_N + \beta) - (y_N + \alpha)}
+\\
+\hat{r} &= \frac{1 - y_N - \alpha}{N - 2 y_N - \alpha + \beta}
 \\
 \frac{\partial \log(f)}{\partial r} &= r^{-1}(\delta - 1) + (1 - r)^{-1}(\gamma - 1) = 0
 \\
 \frac{\partial^2 \log(f)}{\partial r} 
 &= r^{-2}(1 - \delta) - (r - 1)^{-2}(\gamma - 1)
+\\
+&= \frac{1 - (y_N + \alpha)}{r^2} - \frac{(N - y_N + \beta - 1)}{(r - 1)^2}
 \end{aligned}
 \end{eqnarray*}
 
-The Laplace approximation is a $\mathcal{N}(\mu, \Sigma)$ where
+The Laplace approximation is $\mathcal{N}(\mu, \Sigma)$ where
 
 \begin{eqnarray*}
 \begin{aligned}
-\mu &=  \frac{1 - \delta}{\gamma - \delta}
+\mu &= \hat{r}
 \\
-\Sigma^{-1} &= -(r^{-2}(1 - \delta) - (r - 1)^{-2}(\gamma - 1))
+\Sigma^{-1} &= - \left( \frac{\partial^2 \log(f)}{\partial r} \right) \Big|_{\hat{r}}
 \end{aligned}
 \end{eqnarray*}
 
