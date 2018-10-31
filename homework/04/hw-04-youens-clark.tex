@@ -134,7 +134,7 @@ p(\sigma^2 | \alpha, \beta) = \frac{\beta^{\alpha}}{\Gamma(\alpha)} (\sigma^2)^{
 \end{eqnarray*}
 then the posterior over $\sigma^2$ will also be inverse Gamma.  Derive the parameters for the posterior belief in the variance.  
 
-Also, explain why this is a better prior than a Gaussian density.
+%Also, explain why this is a better prior than a Gaussian density.
 
 {\bf Solution.}
 
@@ -494,23 +494,25 @@ f = p(t_n | \mathbf{x}_n, \mathbf{w}) p(\mathbf{w}|\mu, \sigma^2)
 (a)  Widrow-Hoff update:
 \begin{eqnarray*}
 \begin{aligned}
-w_{n+1} &:= w_n + \alpha (\frac{\partial \log(f)}{\partial \mathbf{w}})
+w_{n+1} &= w_n + \alpha \left(\frac{\partial \log(f)}{\partial \mathbf{w}}\right)
 \\
-&:= w_n + \alpha (t_n \mathbf{x}_n (\mathbf{w}^\top \mathbf{x}_n)^{-1} 
-- \mathbf{x}_n - \frac{1}{\sigma^2}\mathbf{w})
+&= w_n + \alpha \left(
+t_n \mathbf{x}_n (\mathbf{w}^\top \mathbf{x}_n)^{-1} 
+- \mathbf{x}_n - \frac{1}{\sigma^2}\mathbf{w}
+\right)
 \end{aligned}
 \end{eqnarray*}
 
 (b)  Newton-Raphson update:
 \begin{eqnarray*}
 \begin{aligned}
-w_{n+1} &:= w_n - 
+w_{n+1} &= w_n - 
 \left(
 \frac{\partial^2 \log(f)}{\partial \mathbf{w} \partial \mathbf{w}^\top }
 \right)^{-1}
 \frac{\partial \log(f)}{\partial \mathbf{w}}
 \\
-&:= w_n - 
+&= w_n - 
 \left(
 -( t_n \mathbf{x}_n^\top \mathbf{x}_n ( \mathbf{w}^\top \mathbf{x}_n)^{-2}) - \frac{1}{\sigma^2}
 \right)^{-1}

@@ -8,3 +8,6 @@ l2:
 
 l3:
 	./plot_laplace_approx.py -a 1 -b 30 -n 10 -y 3 -N -o laplace3.png
+
+clean:
+	rm -f hw-04-youens-clark.{aux,log,synctex.gz}
