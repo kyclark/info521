@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Author : kyclark
+Author : Ken Youens-Clark <kyclark@email.arizona.edu>
 Date   : 2018-10-25
 Purpose: Plot Laplace estimation of beta distribution
 """
@@ -85,8 +85,8 @@ def main():
         if args.debug:
             warn(msg)
 
-    debug('α = {} β = {} N = {} y = {}'.format(alpha_val, beta_val, n_val,
-                                               y_val))
+    debug('$\alpha = {} \beta = {} N = {} y = {}$'.format(
+        alpha_val, beta_val, n_val, y_val))
     r_hat = (1 - y_val - alpha_val) / (2 - alpha_val - n_val - beta_val)
     debug('r_hat = {}'.format(r_hat))
 
@@ -98,7 +98,7 @@ def main():
     debug('sigma = {}'.format(sigma))
 
     beta_dist = beta(alpha_val, beta_val)
-    x = np.linspace(0, 1, n_val)
+    x = np.linspace(0, 1, 100)
 
     plt.figure()
     plt.plot(x, beta_dist.pdf(x), 'blue')
@@ -108,6 +108,7 @@ def main():
 
     plt.xlabel('x')
     plt.ylabel('y')
+    plt.legend(['Beta', 'Laplace'])
 
     tmpl = r'Laplace approx for $\alpha$ = {}, $\beta$ = {}, N = {}, y = {}'
     title = tmpl.format(alpha_val, beta_val, n_val, y_val)

@@ -13,8 +13,8 @@ between 0 and the radius of the circle (1). We can then use the
 Pythagorean theorem (a^2 + b^2 = c^2) (via the math.hypot function
 that computes Euclidean distance) to find the distance from the origin
 (0,0). If this is less than the radius squared (which is just one
-here), then the point falls within the circle.  Because we are only
-looking at points in the upper-right quadrant of the circle, multiple
+here), then the point falls within the circle.  Because the ratio
+of the area of the circle to the square is pi/4, multiply
 the number found to be within the circle by 4 and then divide by the
 number of samples to estimate pi.
 
