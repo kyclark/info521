@@ -1,14 +1,71 @@
 #!/usr/bin/env python3
+"""
+Author : kyclark
+Date   : 2018-11-24
+Purpose: K-Nearest Neighbors
+"""
 
-import numpy as np
+import argparse
 import matplotlib
 matplotlib.use('TkAgg')
 import matplotlib.pyplot as plt
+import numpy as np
+import sys
+from collections import Counter
 from matplotlib.colors import ListedColormap
 from scipy.spatial import distance
 
 # Create color map
 cmap_light = ListedColormap(['#FFAAAA', '#AAFFAA', '#AAAAFF'])
+
+
+# --------------------------------------------------
+def get_args():
+    """get command-line arguments"""
+    parser = argparse.ArgumentParser(
+        description='K-Nearest Neighbors',
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter)
+
+    parser.add_argument(
+        '-f',
+        '--file',
+        metavar='FILE',
+        help='Input file',
+        default='../data/knn_binary_data.csv')
+
+    # parser.add_argument(
+    #     '-a',
+    #     '--arg',
+    #     help='A named string argument',
+    #     metavar='str',
+    #     type=str,
+    #     default='')
+
+    # parser.add_argument(
+    #     '-i',
+    #     '--int',
+    #     help='A named integer argument',
+    #     metavar='int',
+    #     type=int,
+    #     default=0)
+
+    # parser.add_argument(
+    #     '-f', '--flag', help='A boolean flag', action='store_true')
+
+    return parser.parse_args()
+
+
+# --------------------------------------------------
+def warn(msg):
+    """Print a message to STDERR"""
+    print(msg, file=sys.stderr)
+
+
+# --------------------------------------------------
+def die(msg='Something bad happened'):
+    """warn() and exit with error"""
+    warn(msg)
+    sys.exit(1)
 
 
 # --------------------------------------------------
@@ -31,32 +88,10 @@ def read_data(path, d=','):
 
 
 # --------------------------------------------------
-def plot_data(x, t, new_figure=True):
-    """
-    Plot the data as a scatter plot
-    :param new_figure: Flag for whether to create a new figure; don't when plotting on top of existing fig.
-    :return:
-    """
-    # Plot the binary data
-    ma = ['o', 's', 'v']
-    fc = ['r', 'g', 'b']  # np.array([0, 0, 0]), np.array([1, 1, 1])]
-    tv = np.unique(t.flatten())  # an array of the unique class labels
-    if new_figure:
-        plt.figure()
-    for i in range(tv.shape[0]):
-        pos = (t == tv[i]).nonzero(
-        )  # returns a boolean vector mask for selecting just the instances of class tv[i]
-        plt.scatter(
-            np.asarray(x[pos, 0]),
-            np.asarray(x[pos, 1]),
-            marker=ma[i],
-            facecolor=fc[i])
-
-
-# --------------------------------------------------
 def knn(p, k, x, t):
     """
-    K-Nearest Neighbors classifier.  Return the most frequent class among the k nearest points
+    K-Nearest Neighbors classifier.  Return the most frequent class among the k
+    nearest points
     :param p: point to classify (assumes 2-dimensional)
     :param k: number of nearest neighbors
     :param x: array of observed 2-dimensional points
@@ -66,23 +101,21 @@ def knn(p, k, x, t):
 
     # Number of instances in data set
     N = x.shape[0]
-
     d = list(map(lambda z: distance.euclidean(p, z), x))
-    print(d)
-    print(np.argsort(d))
 
-    # for x_n in x:
-    #     d = distance.euclidean(p, x_n)
-    #     print('dist {} -> {} = {}'.format(p, x_n, d))
-    #     break
+    count = Counter()
+    for i in np.argsort(d):
+        target = t[i]
+        count[target] += 1
+        if i == k:
+            break
 
-    #dist = np.argsort(np.hypot(p, x))
-    #print(dist)
-
-    ### YOUR CODE HERE ###
-    top_class = 0
-
-    return top_class
+    # most_common() returns a sorted list of tuples
+    # so take the first element of the first tuple -- [0][0]
+    highest = count.most_common(1)[0][0]
+    if highest > 0:
+        print('{}!!!'.format(highest))
+    return count.most_common(1)[0][0]
 
 
 # --------------------------------------------------
@@ -125,8 +158,35 @@ def plot_decision_boundary(k, x, t, granularity=100):
 
 
 # --------------------------------------------------
+def plot_data(x, t, new_figure=True):
+    """
+    Plot the data as a scatter plot
+    :param new_figure: Flag for whether to create a new figure; don't when
+    plotting on top of existing fig.
+    :return:
+    """
+    # Plot the binary data
+    ma = ['o', 's', 'v']
+    fc = ['r', 'g', 'b']  # np.array([0, 0, 0]), np.array([1, 1, 1])]
+    tv = np.unique(t.flatten())  # an array of the unique class labels
+    if new_figure:
+        plt.figure()
+
+    for i in range(tv.shape[0]):
+        # returns a boolean vector mask for selecting just the instances of class tv[i]
+        pos = (t == tv[i]).nonzero()
+        plt.scatter(
+            np.asarray(x[pos, 0]),
+            np.asarray(x[pos, 1]),
+            marker=ma[i],
+            facecolor=fc[i])
+
+
+# --------------------------------------------------
 def main():
-    x, t = read_data("../data/knn_binary_data.csv")
+    args = get_args()
+    x, t = read_data(args.file)
+    # x, t = read_data("../data/knn_binary_data.csv")
     # x, t = read_data("../data/knn_three_class_data.csv")
 
     # Loop over different neighborhood values K
