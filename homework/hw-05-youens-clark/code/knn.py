@@ -104,17 +104,15 @@ def knn(p, k, x, t):
     d = list(map(lambda z: distance.euclidean(p, z), x))
 
     count = Counter()
-    for i in np.argsort(d):
-        target = t[i]
+    for i, pos in enumerate(np.argsort(d)):
+        target = t[pos]
+        #print("i {} pos {} target {}".format(i, pos, target))
         count[target] += 1
         if i == k:
             break
 
     # most_common() returns a sorted list of tuples
     # so take the first element of the first tuple -- [0][0]
-    highest = count.most_common(1)[0][0]
-    if highest > 0:
-        print('{}!!!'.format(highest))
     return count.most_common(1)[0][0]
 
 
@@ -153,24 +151,13 @@ def plot_decision_boundary(k, x, t, granularity=100):
     plt.title(ti)
     plt.draw()
 
-    # re-plot the data
-    plot_data(x, t, new_figure=False)
-
-
-# --------------------------------------------------
-def plot_data(x, t, new_figure=True):
-    """
-    Plot the data as a scatter plot
-    :param new_figure: Flag for whether to create a new figure; don't when
-    plotting on top of existing fig.
-    :return:
-    """
-    # Plot the binary data
+    # Plot the points
     ma = ['o', 's', 'v']
     fc = ['r', 'g', 'b']  # np.array([0, 0, 0]), np.array([1, 1, 1])]
     tv = np.unique(t.flatten())  # an array of the unique class labels
-    if new_figure:
-        plt.figure()
+
+    #if new_figure:
+    #    plt.figure()
 
     for i in range(tv.shape[0]):
         # returns a boolean vector mask for selecting just the instances of class tv[i]
@@ -186,12 +173,9 @@ def plot_data(x, t, new_figure=True):
 def main():
     args = get_args()
     x, t = read_data(args.file)
-    # x, t = read_data("../data/knn_binary_data.csv")
-    # x, t = read_data("../data/knn_three_class_data.csv")
 
     # Loop over different neighborhood values K
-    #for k in [1, 5, 10, 59]:
-    for k in [1]:
+    for k in [1, 5, 10, 59]:
         plot_decision_boundary(k, x, t)
 
     plt.show()
