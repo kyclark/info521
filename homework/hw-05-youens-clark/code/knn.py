@@ -101,12 +101,11 @@ def knn(p, k, x, t):
 
     # Number of instances in data set
     N = x.shape[0]
-    d = list(map(lambda z: distance.euclidean(p, z), x))
+    d = map(lambda z: distance.euclidean(p, z), x)
 
     count = Counter()
     for i, pos in enumerate(np.argsort(d)):
         target = t[pos]
-        #print("i {} pos {} target {}".format(i, pos, target))
         count[target] += 1
         if i == k:
             break
