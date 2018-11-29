@@ -8,9 +8,13 @@ Purpose: Cross-validation of K-Nearest Neighbors
 import argparse
 import sys
 import pandas as pd
-from sklearn.model_selection import train_test_split
+import numpy as np
+import matplotlib.pyplot as plt
+from collections import Counter
 from scipy.spatial import distance
+from sklearn.model_selection import KFold
 from sklearn.model_selection import ShuffleSplit
+from sklearn.model_selection import train_test_split
 
 
 # --------------------------------------------------
@@ -20,16 +24,13 @@ def get_args():
         description='Cross-validation of K-Nearest Neighbors',
         formatter_class=argparse.ArgumentDefaultsHelpFormatter)
 
-    #parser.add_argument(
-    #    'positional', metavar='str', help='A positional argument')
-
     parser.add_argument(
         '-f',
         '--file',
         help='Input file',
         metavar='FILE',
         type=str,
-        default='')
+        default='../data/knn_binary_data.csv')
 
     parser.add_argument(
         '-i',
@@ -40,10 +41,15 @@ def get_args():
         default=10)
 
     parser.add_argument(
-        '-k', help='K-nearest neighbors', metavar='int', type=int, default=30)
+        '-o',
+        '--outfile',
+        help='File name to write figure',
+        metavar='FILE',
+        type=str,
+        default='')
 
-    #parser.add_argument(
-    #    '-f', '--flag', help='A boolean flag', action='store_true')
+    parser.add_argument(
+        '-k', help='Max value for K', metavar='int', type=int, default=30)
 
     return parser.parse_args()
 
@@ -73,17 +79,8 @@ def knn(p, k, x, t):
     :return: the top class label
     """
 
-    d = map(lambda z: distance.euclidean(p, z), x)
-
-    count = Counter()
-    for i, pos in enumerate(np.argsort(d)):
-        target = t[pos]
-        count[target] += 1
-        if i == k:
-            break
-
-    # most_common() returns a sorted list of tuples
-    # so take the first element of the first tuple -- [0][0]
+    d = np.argsort(list(map(lambda z: distance.euclidean(p, z), x)))[:k]
+    count = Counter(t[d])
     return count.most_common(1)[0][0]
 
 
@@ -91,21 +88,48 @@ def knn(p, k, x, t):
 def main():
     """Make a jazz noise here"""
     args = get_args()
-    df = pd.read_csv(args.file)
+    infile = args.file
+    k = args.k
+    iterations = args.iterations
+    out_file = args.outfile
+
+    df = pd.read_csv(infile)
     X = df.iloc[:, 0:2].values
-    t = df.iloc[:, 2].values
+    t = pd.to_numeric(df.iloc[:, 2].values, downcast='integer')
 
-    # rs = ShuffleSplit(n_splits=args.iterations, test_size=0.3)
-    # for i, (train_index, test_index) in enumerate(rs.split(X)):
-    #     print("{}: TRAIN: {}\nTEST: {}\n".format(i+1, train_index, test_index))
-    #     x = 
+    kf = KFold(n_splits=iterations)
 
-    for i in range(args.iterations):
-        X_train, X_test, y_train, y_test = train_test_split(
-                X, t, test_size=0.33)
-        predicted = map(lambda p: knn(p, args.k, 
-        for j in range(len(x_train)):
-            knn(x_train[j], y_train, args.k,
+    x_plot = []
+    y_plot = []
+    for k in range(1, k + 1):
+        predictions = []
+        for train, test in kf.split(X):
+            X_train, X_test, y_train, y_test = X[train], X[test], t[train], t[
+                test]
+            predicted = list(
+                map(lambda p: knn(p, k, X_train, y_train), X_test))
+            predictions.append(np.mean(predicted == y_test))
+
+        # for _ in range(args.iterations):
+        #     X_train, X_test, y_train, y_test = train_test_split(
+        #         X, t, test_size=0.33)
+        #     predicted = list(
+        #         map(lambda p: knn(p, k, X_train, y_train), X_test))
+        #     predictions.append(np.mean(predicted == y_test))
+
+        print('k {} = {}'.format(k, np.mean(predictions)))
+        x_plot.append(k)
+        y_plot.append(np.mean(predictions))
+
+    best = np.argmax(y_plot) + 1
+
+    plt.plot(x_plot, y_plot)
+    plt.title('Best k = {}'.format(best))
+
+    if out_file:
+        plt.savefig(out_file)
+
+    plt.show()
 
 
 # --------------------------------------------------

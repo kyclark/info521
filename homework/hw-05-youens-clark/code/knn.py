@@ -101,14 +101,8 @@ def knn(p, k, x, t):
 
     # Number of instances in data set
     N = x.shape[0]
-    d = map(lambda z: distance.euclidean(p, z), x)
-
-    count = Counter()
-    for i, pos in enumerate(np.argsort(d)):
-        target = t[pos]
-        count[target] += 1
-        if i == k:
-            break
+    d = np.argsort(list(map(lambda z: distance.euclidean(p, z), x)))[:k]
+    count = Counter(t[d])
 
     # most_common() returns a sorted list of tuples
     # so take the first element of the first tuple -- [0][0]

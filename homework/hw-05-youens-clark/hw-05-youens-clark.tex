@@ -141,7 +141,92 @@ Adapted from {\bf Exercise 5.3} of FCMA p.202:
 
 Compute the maximum likelihood estimates of $\boldsymbol{\mu}_c$ and $\boldsymbol{\Sigma}_c$ for class $c$ of a Bayesian classifier with Gaussian class-conditionals and a set of $N_c$ objects belonging to class $c$, $\mathbf{x}_1$, ..., $\mathbf{x}_{N_c}$. 
 
-{\bf Solution.} %$<$Solution goes here$>$
+{\bf Solution.} 
+
+\begin{eqnarray*}
+\begin{aligned}
+%p(\boldsymbol{\mu}_c \boldsymbol{\Sigma}_c | \mathbf{X}^c) &=
+%\frac{
+%p(\mathbf{X}^c | \boldsymbol{\mu}_c, \boldsymbol \Sigma_c) 
+%p(\boldsymbol{\mu}_c, \boldsymbol{\Sigma}_c)
+%}
+%{p(\mathbf{X}^c)}
+%\\
+%\text{The Gaussian prior}
+%\\
+%p(\mathbf{w}|\mu, \sigma^2) &=
+%\frac{1}{(2 \pi)^{N/2} | \sigma^2 \mathbf{I}|^{1/2}} 
+%\exp 
+%\left\{ 
+%-\frac{1}{2} 
+%(\mathbf{w}\ - \mu)^\top 
+%(\sigma^2 \mathbf{I})^{-1} 
+%(\mathbf{w}\ - \mu)
+%\right\}
+%\\
+\text{Likelihood}
+\\
+L &= p(\mathbf{X}^c|\boldsymbol{\mu}_c, \boldsymbol{\Sigma}_c)
+\\
+\text{is product of (Gaussian) probabilities}
+\\
+&= \prod_n^N \mathcal{N} (x_n|\boldsymbol{\mu}_c, \boldsymbol{\Sigma}_c)
+\\
+&= \prod_n^N 
+\frac{1}{(2 \pi)^{N/2} | \boldsymbol {\Sigma}_c |^{1/2}} 
+\exp 
+\left\{ 
+-\frac{1}{2} (x_n\ - \boldsymbol {\mu}_c)^\top \boldsymbol \Sigma^{-1} (x_n - \boldsymbol {\mu}_c)
+\right\}
+\\
+\text{Use log to handle product}
+\\
+\log L &= \sum_n^N 
+\log \left(
+\frac{1}{(2 \pi)^{N/2} | {\Sigma}_c |^{1/2}} 
+\exp 
+\left\{ -\frac{1}{2} (x_n\ - \boldsymbol {\mu}_c)^\top \boldsymbol {\Sigma}_c^{-1} (x_n - \boldsymbol {\mu}_c) \right\}
+\right)
+\\
+&= \sum_n^N
+\left( -\frac{1}{2} (x_n\ - \boldsymbol {\mu}_c)^\top \boldsymbol {\Sigma}_c^{-1} (x_n - \boldsymbol {\mu}_c) \right)
+\log \left( \frac{1}{(2 \pi)^{N/2} | \boldsymbol \Sigma |^{1/2}} \right)
+\\
+\text{Take derivative w.r.t. $\boldsymbol \mu_c$}
+\\
+\frac{\partial \log(L)}{\partial \boldsymbol \mu_c} 
+&= -\frac{1}{2} \sum_n^N 2 \boldsymbol {\Sigma}_c^{-1} (x_n - \boldsymbol {\mu}_c) (-1)
+\\
+\text{Set to zero}
+\\
+\sum_n^N \boldsymbol {\Sigma}_c^{-1} (x_n - \boldsymbol {\mu}_c) &= 0
+\\
+\text{Solve for $\boldsymbol \mu_c$}
+\\
+\sum_n^N \boldsymbol {\Sigma}_c^{-1} x_n - \boldsymbol {\Sigma}_c^{-1} \boldsymbol {\mu}_c &= 0
+\\
+\boldsymbol {\Sigma}_c^{-1} \boldsymbol {\mu}_c &= \sum_n^N \boldsymbol {\Sigma}_c^{-1} x_n 
+\\
+\boldsymbol {\Sigma}_c^{-1} \boldsymbol {\mu}_c &= \boldsymbol {\Sigma}_c^{-1} \sum_n^N  x_n 
+\\
+\boldsymbol {\mu}_c &= \sum_n^N  x_n 
+\\
+\text{Take derivative w.r.t. $\boldsymbol {\Sigma}_c$}
+\\
+\frac{\partial \log(L)}{\partial \boldsymbol {\Sigma}_c} 
+&= \sum_n^N
+\left( \frac{1}{2} (x_n\ - \boldsymbol {\mu}_c)^\top \boldsymbol {\Sigma}_c^{-2} (x_n - \boldsymbol {\mu}_c) \right)
+\left( \frac{1}{2 | \boldsymbol \Sigma |} \right)
+\\
+\text{The correct answers:}
+\\
+\boldsymbol{\mu}_c &= \frac{1}{N_c} \sum_{n=1}^{N_c} \mathbf{x}_n
+\\
+\boldsymbol{\Sigma}_c &= 
+\frac{1}{N_c} \sum_{n=1}^{N_c} (\mathbf{x}_n - \boldsymbol{\mu}_c) 
+(\mathbf{x}_n - \boldsymbol{\mu}_c)^\top
+\end{aligned}
+\end{eqnarray*}
 
 
 
@@ -154,7 +239,18 @@ Compute the maximum likelihood estimates of $q_{mc}$ for class $c$ of a Bayesian
 
 {\bf Solution.} %$<$Solution goes here$>$
 
-
+\begin{eqnarray*}
+\begin{aligned}
+L &= P(x_n | \mathbf{q})
+\\
+&= \left( \frac{s_n !}{\prod_{m=1}^M x_{nm} !} \right)
+\prod_{m=1}^M {q_m}^{x_{nm}}
+\\
+\text{The answer}
+\\
+q_{cm} &= \frac{ \sum_{n=1}^{N_c} x_{nm} } { \sum_{m'=1}^M \sum_{n=1}^{N_c} x_{nm'} }
+\end{aligned}
+\end{eqnarray*}
 
 
 %%%     Problem 3
@@ -190,7 +286,7 @@ For a support vector machine, if we remove one of the support vectors from the t
 \item[5.]  [4 points]
 In this exercise you will use the python script, {\tt knn.py}, which contains code to plot the decision boundary for a k-nearest neighbors classifier.  Two data sources are also provided in the {\tt data} directory: {\tt knn\_binary\_data.csv} and {\tt knn\_three\_class\_data.csv}.
 
-In python file, the function {\tt knn} is to compute the k-nearest neighbors classification for a point {\tt p}, but the functionality is not currently implemented.  You \emph{can} run the code in its unimplemented state, but the decision boundary will not display (everything will be considered the same class).  You must implement this yourself.  Use a Euclidean distance measure for determining the neighbors (note: you don' t need to take the square root! The sum of squares is sufficient).  You do not need to implement any fancy indexing -- you can simply search for the k nearest points by searching over the pairwise distance of the input ({\tt p}) to all of the "training" inputs ({\tt x}).  Use the maximum class frequency as the class decision rule.  You do not need to worry about doing anything special for breaking ties.  The numpy function {\tt argsort} and the python {\tt collections.Counter} may be of use, but are not required.  Submit the {\tt knn.py} file with your implementation.  In your written solution, run the code on both of the provided data sources ( {\tt knn\_binary\_data.csv} and {\tt knn\_three\_class\_data.csv}.), and four each, plot the decision boundary for $k = \{1, 5, 10, 59\}$.  Include informative captions and describe any patterns you see in the decision boundaries as k changes.
+In python file, the function {\tt knn} is to compute the k-nearest neighbors classification for a point {\tt p}, but the functionality is not currently implemented.  You \emph{can} run the code in its unimplemented state, but the decision boundary will not display (everything will be considered the same class).  You must implement this yourself.  Use a Euclidean distance measure for determining the neighbors (note: you don' t need to take the square root! The sum of squares is sufficient).  You do not need to implement any fancy indexing -- you can simply search for the k nearest points by searching over the pairwise distance of the input ({\tt p}) to all of the "training" inputs ({\tt x}).  Use the maximum class frequency as the class decision rule.  You do not need to worry about doing anything special for breaking ties.  The numpy function {\tt argsort} and the python {\tt collections.Counter} may be of use, but are not required.  Submit the {\tt knn.py} file with your implementation.  In your written solution, run the code on both of the provided data sources ( {\tt knn\_binary\_data.csv} and {\tt knn\_three\_class\_data.csv}.), and for each, plot the decision boundary for $k = \{1, 5, 10, 59\}$.  Include informative captions and describe any patterns you see in the decision boundaries as k changes.
 
 {\bf Solution.}
 
