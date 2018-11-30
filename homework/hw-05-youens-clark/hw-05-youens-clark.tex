@@ -145,25 +145,9 @@ Compute the maximum likelihood estimates of $\boldsymbol{\mu}_c$ and $\boldsymbo
 
 \begin{eqnarray*}
 \begin{aligned}
-%p(\boldsymbol{\mu}_c \boldsymbol{\Sigma}_c | \mathbf{X}^c) &=
-%\frac{
-%p(\mathbf{X}^c | \boldsymbol{\mu}_c, \boldsymbol \Sigma_c) 
-%p(\boldsymbol{\mu}_c, \boldsymbol{\Sigma}_c)
-%}
-%{p(\mathbf{X}^c)}
-%\\
-%\text{The Gaussian prior}
-%\\
-%p(\mathbf{w}|\mu, \sigma^2) &=
-%\frac{1}{(2 \pi)^{N/2} | \sigma^2 \mathbf{I}|^{1/2}} 
-%\exp 
-%\left\{ 
-%-\frac{1}{2} 
-%(\mathbf{w}\ - \mu)^\top 
-%(\sigma^2 \mathbf{I})^{-1} 
-%(\mathbf{w}\ - \mu)
-%\right\}
-%\\
+%
+% Likelihood
+%
 \text{Likelihood}
 \\
 L &= p(\mathbf{X}^c|\boldsymbol{\mu}_c, \boldsymbol{\Sigma}_c)
@@ -176,47 +160,67 @@ L &= p(\mathbf{X}^c|\boldsymbol{\mu}_c, \boldsymbol{\Sigma}_c)
 \frac{1}{(2 \pi)^{N/2} | \boldsymbol {\Sigma}_c |^{1/2}} 
 \exp 
 \left\{ 
--\frac{1}{2} (x_n\ - \boldsymbol {\mu}_c)^\top \boldsymbol \Sigma^{-1} (x_n - \boldsymbol {\mu}_c)
+-\frac{1}{2} (x_n\ - \boldsymbol {\mu}_c)^\top \boldsymbol {\Sigma}_c^{-1} (x_n - \boldsymbol {\mu}_c)
 \right\}
 \\
-\text{Use log to handle product}
-\\
-\log L &= \sum_n^N 
-\log \left(
-\frac{1}{(2 \pi)^{N/2} | {\Sigma}_c |^{1/2}} 
+&\propto 
+|\boldsymbol {\Sigma}_c|^{-{N_c}/2}
 \exp 
-\left\{ -\frac{1}{2} (x_n\ - \boldsymbol {\mu}_c)^\top \boldsymbol {\Sigma}_c^{-1} (x_n - \boldsymbol {\mu}_c) \right\}
+\left\{ 
+\sum_n^{N_c} -\frac{1}{2} (x_n\ - \boldsymbol {\mu}_c)^\top \boldsymbol {\Sigma}_c^{-1} (x_n - \boldsymbol {\mu}_c)
+\right\}
+\\
+% 
+% Log
+%
+\text{Use log to handle exponent}
+\\
+\log(L) &= 
+\left( - \frac{N_c}{2} \log(|\boldsymbol {\Sigma}_c|) \right)
+\left(
+-\frac{1}{2} \sum_n^{N_c} (x_n\ - \boldsymbol {\mu}_c)^\top \boldsymbol {\Sigma}_c^{-1} (x_n - \boldsymbol {\mu}_c)
 \right)
 \\
-&= \sum_n^N
-\left( -\frac{1}{2} (x_n\ - \boldsymbol {\mu}_c)^\top \boldsymbol {\Sigma}_c^{-1} (x_n - \boldsymbol {\mu}_c) \right)
-\log \left( \frac{1}{(2 \pi)^{N/2} | \boldsymbol \Sigma |^{1/2}} \right)
-\\
+%
+% Derivative \mu
+%
 \text{Take derivative w.r.t. $\boldsymbol \mu_c$}
 \\
 \frac{\partial \log(L)}{\partial \boldsymbol \mu_c} 
-&= -\frac{1}{2} \sum_n^N 2 \boldsymbol {\Sigma}_c^{-1} (x_n - \boldsymbol {\mu}_c) (-1)
+&= -\frac{1}{2} \sum_n^{N_c} 2 \boldsymbol {\Sigma}_c^{-1} (x_n - \boldsymbol {\mu}_c) 
+= - \sum_n^{N_c} \boldsymbol {\Sigma}_c^{-1} (x_n - \boldsymbol {\mu}_c) 
 \\
-\text{Set to zero}
+\text{Set to zero, solve for $\boldsymbol \mu_c$}
 \\
-\sum_n^N \boldsymbol {\Sigma}_c^{-1} (x_n - \boldsymbol {\mu}_c) &= 0
+- \sum_n^{N_c} \boldsymbol {\Sigma}_c^{-1} (x_n - \boldsymbol {\mu}_c) &= 0
 \\
-\text{Solve for $\boldsymbol \mu_c$}
+\sum_n^{N_c} \boldsymbol {\Sigma}_c^{-1} \boldsymbol {\mu}_c - \sum_n^{N_c} \boldsymbol {\Sigma}_c^{-1} x_n  &= 0
 \\
-\sum_n^N \boldsymbol {\Sigma}_c^{-1} x_n - \boldsymbol {\Sigma}_c^{-1} \boldsymbol {\mu}_c &= 0
+\boldsymbol {\Sigma}_c^{-1} N_c \boldsymbol {\mu}_c - \boldsymbol {\Sigma}_c^{-1} \sum_n^{N_c} x_n &= 0
 \\
-\boldsymbol {\Sigma}_c^{-1} \boldsymbol {\mu}_c &= \sum_n^N \boldsymbol {\Sigma}_c^{-1} x_n 
+\boldsymbol {\Sigma}_c^{-1} N_c \boldsymbol {\mu}_c &= \boldsymbol {\Sigma}_c^{-1} \sum_n^{N_c} x_n
 \\
-\boldsymbol {\Sigma}_c^{-1} \boldsymbol {\mu}_c &= \boldsymbol {\Sigma}_c^{-1} \sum_n^N  x_n 
+N_c \boldsymbol {\mu}_c &= \sum_n^{N_c} x_n
 \\
-\boldsymbol {\mu}_c &= \sum_n^N  x_n 
+\boldsymbol {\mu}_c &= \frac{1}{N_c} \sum_n^N  x_n 
 \\
-\text{Take derivative w.r.t. $\boldsymbol {\Sigma}_c$}
+%
+% Derivative \Sigma
+%
+\text{Take derivative w.r.t. $\boldsymbol {\Sigma}_c$, set to zero, solve}
 \\
 \frac{\partial \log(L)}{\partial \boldsymbol {\Sigma}_c} 
-&= \sum_n^N
-\left( \frac{1}{2} (x_n\ - \boldsymbol {\mu}_c)^\top \boldsymbol {\Sigma}_c^{-2} (x_n - \boldsymbol {\mu}_c) \right)
-\left( \frac{1}{2 | \boldsymbol \Sigma |} \right)
+&=
+- \frac{N_c}{2} {| \boldsymbol {\Sigma}_c |}^{-1} 
++ \frac{1}{2} 
+\sum_n^{N_c} (x_n\ - \boldsymbol {\mu}_c)^\top \boldsymbol {\Sigma}_c^{-2} (x_n - \boldsymbol {\mu}_c)
+\\
+\frac{N_c}{2} {| \boldsymbol {\Sigma}_c |}^{-1} &=
+\frac{1}{2} 
+\sum_n^{N_c} (x_n\ - \boldsymbol {\mu}_c)^\top \boldsymbol {\Sigma}_c^{-2} (x_n - \boldsymbol {\mu}_c)
+%
+% Answers
+%
 \\
 \text{The correct answers:}
 \\
@@ -227,8 +231,6 @@ L &= p(\mathbf{X}^c|\boldsymbol{\mu}_c, \boldsymbol{\Sigma}_c)
 (\mathbf{x}_n - \boldsymbol{\mu}_c)^\top
 \end{aligned}
 \end{eqnarray*}
-
-
 
 
 %%%     Problem 2

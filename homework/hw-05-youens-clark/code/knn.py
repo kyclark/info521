@@ -99,8 +99,6 @@ def knn(p, k, x, t):
     :return: the top class label
     """
 
-    # Number of instances in data set
-    N = x.shape[0]
     d = np.argsort(list(map(lambda z: distance.euclidean(p, z), x)))[:k]
     count = Counter(t[d])
 
