@@ -7,16 +7,14 @@ Purpose: K-Nearest Neighbors
 
 import argparse
 import matplotlib
-matplotlib.use('TkAgg')
+import os
+#matplotlib.use('TkAgg')
 import matplotlib.pyplot as plt
 import numpy as np
 import sys
 from collections import Counter
 from matplotlib.colors import ListedColormap
 from scipy.spatial import distance
-
-# Create color map
-cmap_light = ListedColormap(['#FFAAAA', '#AAFFAA', '#AAAAFF'])
 
 
 # --------------------------------------------------
@@ -33,24 +31,32 @@ def get_args():
         help='Input file',
         default='../data/knn_binary_data.csv')
 
-    # parser.add_argument(
-    #     '-a',
-    #     '--arg',
-    #     help='A named string argument',
-    #     metavar='str',
-    #     type=str,
-    #     default='')
+    parser.add_argument(
+        '-k',
+        metavar='INT',
+        help='Values for K',
+        nargs='+',
+        type=int,
+        default=[1, 5, 10, 59])
 
-    # parser.add_argument(
-    #     '-i',
-    #     '--int',
-    #     help='A named integer argument',
-    #     metavar='int',
-    #     type=int,
-    #     default=0)
+    parser.add_argument(
+        '-o',
+        '--out_dir',
+        help='Output directory for saved figures',
+        metavar='DIR',
+        type=str,
+        default=None)
 
-    # parser.add_argument(
-    #     '-f', '--flag', help='A boolean flag', action='store_true')
+    parser.add_argument(
+        '-g',
+        '--granularity',
+        help='Granularity',
+        metavar='int',
+        type=int,
+        default=100)
+
+    parser.add_argument(
+        '-q', '--quiet', help='Do not show figures', action='store_true')
 
     return parser.parse_args()
 
@@ -108,7 +114,7 @@ def knn(p, k, x, t):
 
 
 # --------------------------------------------------
-def plot_decision_boundary(k, x, t, granularity=100):
+def plot_decision_boundary(k, x, t, granularity=100, out_file=None):
     """
     Given data (observed x and labels t) and choice k of nearest neighbors,
     plots the decision boundary based on a grid of classifications over the
@@ -137,6 +143,9 @@ def plot_decision_boundary(k, x, t, granularity=100):
 
     # plot the binary decision boundary contour
     plt.figure()
+
+    # Create color map
+    cmap_light = ListedColormap(['#FFAAAA', '#AAFFAA', '#AAAAFF'])
     plt.pcolormesh(Xv, Yv, classes, cmap=cmap_light)
     ti = 'K = {0}'.format(k)
     plt.title(ti)
@@ -159,17 +168,42 @@ def plot_decision_boundary(k, x, t, granularity=100):
             marker=ma[i],
             facecolor=fc[i])
 
+    if out_file:
+        warn('Saving figure to "{}"'.format(out_file))
+        plt.savefig(out_file)
+
 
 # --------------------------------------------------
 def main():
     args = get_args()
-    x, t = read_data(args.file)
+    in_file = args.file
+    K = args.k
+    granularity = args.granularity
+    out_dir = args.out_dir
+
+    if not os.path.isfile(in_file):
+        die('"{}" is not a file'.format(in_file))
+
+    x, t = read_data(in_file)
+
+    basename, _ = os.path.splitext(os.path.basename(in_file))
+
+    if out_dir:
+        out_dir = os.path.abspath(out_dir)
 
     # Loop over different neighborhood values K
-    for k in [1, 5, 10, 59]:
-        plot_decision_boundary(k, x, t)
+    for k in K:
+        out_file = None
+        if out_dir:
+            out_file = os.path.join(out_dir, '{}-k-{}.png'.format(basename, k))
+        plot_decision_boundary(
+            k, x, t, granularity=granularity, out_file=out_file)
 
-    plt.show()
+    if not args.quiet:
+        warn('Showing figures')
+        plt.show()
+
+    warn('Done')
 
 
 # --------------------------------------------------

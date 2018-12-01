@@ -27,6 +27,7 @@
 % \usepackage{subfigure}  % allows subfigures in figure
 \usepackage{caption}
 \usepackage{subcaption}
+\usepackage{verbatim}
 
 \usepackage{xspace}
 \newcommand{\latex}{\LaTeX\xspace}
@@ -154,20 +155,20 @@ L &= p(\mathbf{X}^c|\boldsymbol{\mu}_c, \boldsymbol{\Sigma}_c)
 \\
 \text{is product of (Gaussian) probabilities}
 \\
-&= \prod_n^N \mathcal{N} (x_n|\boldsymbol{\mu}_c, \boldsymbol{\Sigma}_c)
+&= \prod_n^N \mathcal{N} (\mathbf{x}_n|\boldsymbol{\mu}_c, \boldsymbol{\Sigma}_c)
 \\
 &= \prod_n^N 
 \frac{1}{(2 \pi)^{N/2} | \boldsymbol {\Sigma}_c |^{1/2}} 
 \exp 
 \left\{ 
--\frac{1}{2} (x_n\ - \boldsymbol {\mu}_c)^\top \boldsymbol {\Sigma}_c^{-1} (x_n - \boldsymbol {\mu}_c)
+-\frac{1}{2} (\mathbf{x}_n\ - \boldsymbol {\mu}_c)^\top \boldsymbol {\Sigma}_c^{-1} (\mathbf{x}_n - \boldsymbol {\mu}_c)
 \right\}
 \\
 &\propto 
 |\boldsymbol {\Sigma}_c|^{-{N_c}/2}
 \exp 
 \left\{ 
-\sum_n^{N_c} -\frac{1}{2} (x_n\ - \boldsymbol {\mu}_c)^\top \boldsymbol {\Sigma}_c^{-1} (x_n - \boldsymbol {\mu}_c)
+\sum_n^{N_c} -\frac{1}{2} (\mathbf{x}_n\ - \boldsymbol {\mu}_c)^\top \boldsymbol {\Sigma}_c^{-1} (\mathbf{x}_n - \boldsymbol {\mu}_c)
 \right\}
 \\
 % 
@@ -178,32 +179,37 @@ L &= p(\mathbf{X}^c|\boldsymbol{\mu}_c, \boldsymbol{\Sigma}_c)
 \log(L) &= 
 \left( - \frac{N_c}{2} \log(|\boldsymbol {\Sigma}_c|) \right)
 \left(
--\frac{1}{2} \sum_n^{N_c} (x_n\ - \boldsymbol {\mu}_c)^\top \boldsymbol {\Sigma}_c^{-1} (x_n - \boldsymbol {\mu}_c)
+-\frac{1}{2} \sum_n^{N_c} (\mathbf{x}_n\ - \boldsymbol {\mu}_c)^\top \boldsymbol {\Sigma}_c^{-1} (\mathbf{x}_n - \boldsymbol {\mu}_c)
 \right)
-\\
+\end{aligned}
+\end{eqnarray*}
+
+\begin{eqnarray*}
+\begin{aligned}
 %
 % Derivative \mu
 %
 \text{Take derivative w.r.t. $\boldsymbol \mu_c$}
 \\
 \frac{\partial \log(L)}{\partial \boldsymbol \mu_c} 
-&= -\frac{1}{2} \sum_n^{N_c} 2 \boldsymbol {\Sigma}_c^{-1} (x_n - \boldsymbol {\mu}_c) 
-= - \sum_n^{N_c} \boldsymbol {\Sigma}_c^{-1} (x_n - \boldsymbol {\mu}_c) 
+&= -\frac{1}{2} \sum_n^{N_c} 2 \boldsymbol {\Sigma}_c^{-1} (\mathbf{x}_n - \boldsymbol {\mu}_c) 
 \\
-\text{Set to zero, solve for $\boldsymbol \mu_c$}
+&= - \sum_n^{N_c} \boldsymbol {\Sigma}_c^{-1} (\mathbf{x}_n - \boldsymbol {\mu}_c) = 0
 \\
-- \sum_n^{N_c} \boldsymbol {\Sigma}_c^{-1} (x_n - \boldsymbol {\mu}_c) &= 0
+\sum_n^{N_c} \boldsymbol {\Sigma}_c^{-1} \boldsymbol {\mu}_c - \sum_n^{N_c} \boldsymbol {\Sigma}_c^{-1} \mathbf{x}_n  &= 0
 \\
-\sum_n^{N_c} \boldsymbol {\Sigma}_c^{-1} \boldsymbol {\mu}_c - \sum_n^{N_c} \boldsymbol {\Sigma}_c^{-1} x_n  &= 0
+\boldsymbol {\Sigma}_c^{-1} N_c \boldsymbol {\mu}_c - \boldsymbol {\Sigma}_c^{-1} \sum_n^{N_c} \mathbf{x}_n &= 0
 \\
-\boldsymbol {\Sigma}_c^{-1} N_c \boldsymbol {\mu}_c - \boldsymbol {\Sigma}_c^{-1} \sum_n^{N_c} x_n &= 0
+\boldsymbol {\Sigma}_c^{-1} N_c \boldsymbol {\mu}_c &= \boldsymbol {\Sigma}_c^{-1} \sum_n^{N_c} \mathbf{x}_n
 \\
-\boldsymbol {\Sigma}_c^{-1} N_c \boldsymbol {\mu}_c &= \boldsymbol {\Sigma}_c^{-1} \sum_n^{N_c} x_n
+N_c \boldsymbol {\mu}_c &= \sum_n^{N_c} \mathbf{x}_n
 \\
-N_c \boldsymbol {\mu}_c &= \sum_n^{N_c} x_n
-\\
-\boldsymbol {\mu}_c &= \frac{1}{N_c} \sum_n^N  x_n 
-\\
+\boldsymbol {\mu}_c &= \frac{1}{N_c} \sum_n^N  \mathbf{x}_n 
+\end{aligned}
+\end{eqnarray*}
+
+\begin{eqnarray*}
+\begin{aligned}
 %
 % Derivative \Sigma
 %
@@ -211,27 +217,34 @@ N_c \boldsymbol {\mu}_c &= \sum_n^{N_c} x_n
 \\
 \frac{\partial \log(L)}{\partial \boldsymbol {\Sigma}_c} 
 &=
-- \frac{N_c}{2} {| \boldsymbol {\Sigma}_c |}^{-1} 
+- \frac{N_c}{2} ( \boldsymbol {\Sigma}_c ^{-1} )
 + \frac{1}{2} 
-\sum_n^{N_c} (x_n\ - \boldsymbol {\mu}_c)^\top \boldsymbol {\Sigma}_c^{-2} (x_n - \boldsymbol {\mu}_c)
+\sum_n^{N_c} (\mathbf{x}_n\ - \boldsymbol {\mu}_c)^\top \boldsymbol {\Sigma}_c^{-2} (\mathbf{x}_n - \boldsymbol {\mu}_c) = 0
 \\
-\frac{N_c}{2} {| \boldsymbol {\Sigma}_c |}^{-1} &=
+\frac{N_c}{2} ({ \boldsymbol {\Sigma}_c }^{-1}) &=
 \frac{1}{2} 
-\sum_n^{N_c} (x_n\ - \boldsymbol {\mu}_c)^\top \boldsymbol {\Sigma}_c^{-2} (x_n - \boldsymbol {\mu}_c)
-%
-% Answers
-%
+\sum_n^{N_c} (\mathbf{x}_n\ - \boldsymbol {\mu}_c)^\top \boldsymbol {\Sigma}_c^{-2} (\mathbf{x}_n - \boldsymbol {\mu}_c)
 \\
-\text{The correct answers:}
+N_c ({ \boldsymbol {\Sigma}_c }^{-1}) &= 
+\boldsymbol {\Sigma}_c^{-1} \left(
+\sum_n^{N_c} (\mathbf{x}_n\ - \boldsymbol {\mu}_c)^\top  (\mathbf{x}_n - \boldsymbol {\mu}_c) 
+\right) \boldsymbol {\Sigma}_c^{-1}
 \\
-\boldsymbol{\mu}_c &= \frac{1}{N_c} \sum_{n=1}^{N_c} \mathbf{x}_n
+N_c \cancel{ ({ \boldsymbol {\Sigma}_c }^{-1}) ({ \boldsymbol {\Sigma}_c }^{-1}) } &= 
+\boldsymbol {\Sigma}_c^{-1} \left(
+\sum_n^{N_c} (\mathbf{x}_n\ - \boldsymbol {\mu}_c)^\top  (\mathbf{x}_n - \boldsymbol {\mu}_c) 
+\right)
+\cancel{ \boldsymbol {\Sigma}_c^{-1} ({ \boldsymbol {\Sigma}_c }^{-1}) }
 \\
-\boldsymbol{\Sigma}_c &= 
-\frac{1}{N_c} \sum_{n=1}^{N_c} (\mathbf{x}_n - \boldsymbol{\mu}_c) 
-(\mathbf{x}_n - \boldsymbol{\mu}_c)^\top
+\cancel{ \frac{1}{N_c} N_c } ({ \boldsymbol {\Sigma}_c }^{-1}) &= 
+\frac{1}{N_c}
+\cancel{ ({ \boldsymbol {\Sigma}_c }^{-1}) \boldsymbol {\Sigma}_c^{-1} }
+\left( \sum_n^{N_c} (\mathbf{x}_n\ - \boldsymbol {\mu}_c)^\top  (\mathbf{x}_n - \boldsymbol {\mu}_c) \right) 
+\\
+{ \boldsymbol {\Sigma}_c }^{-1} &= 
+\frac{1}{N_c} \left( \sum_n^{N_c} (\mathbf{x}_n\ - \boldsymbol {\mu}_c)^\top  (\mathbf{x}_n - \boldsymbol {\mu}_c) \right) 
 \end{aligned}
 \end{eqnarray*}
-
 
 %%%     Problem 2
 \item[2.]  [4 points]
@@ -292,8 +305,67 @@ In python file, the function {\tt knn} is to compute the k-nearest neighbors cla
 
 {\bf Solution.}
 
+When k=1, the boundaries are too close, creating islands of the green squares when they ought to be assumed to have crossed into enemy territory. K of 5 or 10 does a much better job capturing what I would judge to be the real boundary. K of 59 is far too high and pushes the border too far into green square's territory because there are fewer of those class than the other.
 
+\begin{figure}[H]
+\centering
+  \includegraphics[width=\linewidth]{code/knn_binary_data-k-1.png}
+ \caption{KNN k=1 binary classification}
+\label{label}
+\end{figure}
 
+\begin{figure}[H]
+\centering
+  \includegraphics[width=\linewidth]{code/knn_binary_data-k-5.png}
+ \caption{KNN k=5 binary classification}
+\label{label}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+  \includegraphics[width=\linewidth]{code/knn_binary_data-k-10.png}
+ \caption{KNN k=10 binary classification}
+\label{label}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+  \includegraphics[width=\linewidth]{code/knn_binary_data-k-59.png}
+ \caption{KNN k=59 binary classification}
+\label{label}
+\end{figure}
+
+For the classification of three classes, k of 1 again is too liberal with creating boundaries for instance the one green square that is clearly in the red circle's area and also a red circle that ventures into the blue region. Again k of 5 and 10 create smoother boundaries that allow errant positions to wander where they ought not. K of 59 isn't actually terrible since there are roughly equal numbers of the three classes and so no one class gets marginalized too much, but it does a poorer job than 5 or 10.
+
+\begin{figure}[H]
+\centering
+  \includegraphics[width=\linewidth]{code/knn_three_class_data-k-1.png}
+ \caption{KNN k=1 three class classification}
+\label{label}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+  \includegraphics[width=\linewidth]{code/knn_three_class_data-k-5.png}
+ \caption{KNN k=5 three class classification}
+\label{label}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+  \includegraphics[width=\linewidth]{code/knn_three_class_data-k-10.png}
+ \caption{KNN k=10 three class classification}
+\label{label}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+  \includegraphics[width=\linewidth]{code/knn_three_class_data-k-59.png}
+ \caption{KNN k=59 three class classification}
+\label{label}
+\end{figure}
+
+\verbatiminput{./code/knn.py}
 
 %%%     Problem 6
 \item[6.]  [4 points]
@@ -301,7 +373,21 @@ Using your implementation of your KNN classifier in exercise 5, write a script t
 
 {\bf Solution.}
 
+\begin{figure}[H]
+\centering
+  \includegraphics[width=\linewidth]{code/knn-cv-binary.png}
+ \caption{10-fold cross validation of KNN on binary classification where 1 <= k <= 30}
+\label{label}
+\end{figure}
 
+\begin{figure}[H]
+\centering
+  \includegraphics[width=\linewidth]{code/knn-cv-three.png}
+ \caption{10-fold cross validation of KNN on three-class classification where 1 <= k <= 30}
+\label{label}
+\end{figure}
+
+\verbatiminput{./code/knn-cv.py}
 
 \end{itemize}
 
