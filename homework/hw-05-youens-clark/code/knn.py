@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Author : kyclark
+Author : Ken Youens-Clark <kyclark@email.arizona.edu>
 Date   : 2018-11-24
 Purpose: K-Nearest Neighbors
 """

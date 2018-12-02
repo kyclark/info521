@@ -9,3 +9,6 @@ binary:
 
 three:
 	./knn.py -f ../data/knn_three_class_data.csv -o . -q
+
+svm:
+	./svm.py -o svm.png -r 1
