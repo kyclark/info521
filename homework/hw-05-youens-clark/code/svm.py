@@ -62,27 +62,27 @@ def main():
     if args.random_seed is not None:
         np.random.seed(args.random_seed)
 
-    X, y = make_blobs(n_samples=20, centers=2)  #, random_state=6)
+    X, y = make_blobs(n_samples=20, centers=2)
 
     clf = svm.SVC(kernel='linear', C=1000)
     clf.fit(X, y)
 
     #
-    # Plot the SVM
+    # Create grid to evaluate model
     #
-    ax[0].scatter(X[:, 0], X[:, 1], c=y, s=30, cmap=plt.cm.Paired)
-
     xlim = ax[0].get_xlim()
     ylim = ax[0].get_ylim()
-
-    # create grid to evaluate model
     xx = np.linspace(xlim[0], xlim[1], 30)
     yy = np.linspace(ylim[0], ylim[1], 30)
     YY, XX = np.meshgrid(yy, xx)
     xy = np.vstack([XX.ravel(), YY.ravel()]).T
     Z = clf.decision_function(xy).reshape(XX.shape)
 
-    # plot decision boundary and margins
+    #
+    # Plot data, decision boundary and margins, support vectors
+    #
+    ax[0].scatter(X[:, 0], X[:, 1], c=y, s=30, cmap=plt.cm.Paired)
+
     ax[0].contour(
         XX,
         YY,
@@ -92,7 +92,6 @@ def main():
         alpha=0.5,
         linestyles=['--', '-', '--'])
 
-    # plot support vectors
     ax[0].scatter(
         clf.support_vectors_[:, 0],
         clf.support_vectors_[:, 1],
@@ -108,13 +107,12 @@ def main():
     X2 = np.delete(X, support[0], axis=0)
     y2 = np.delete(y, support[0])
 
-    ax[1].scatter(X2[:, 0], X2[:, 1], c=y2, s=30, cmap=plt.cm.Paired)
-
     clf.fit(X2, y2)
 
     Z2 = clf.decision_function(xy).reshape(XX.shape)
 
-    # plot decision boundary and margins
+    ax[1].scatter(X2[:, 0], X2[:, 1], c=y2, s=30, cmap=plt.cm.Paired)
+
     ax[1].contour(
         XX,
         YY,
@@ -124,7 +122,6 @@ def main():
         alpha=0.5,
         linestyles=['--', '-', '--'])
 
-    # plot support vectors
     ax[1].scatter(
         clf.support_vectors_[:, 0],
         clf.support_vectors_[:, 1],

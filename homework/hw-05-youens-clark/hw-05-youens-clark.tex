@@ -261,7 +261,7 @@ L &= P(x_n | \mathbf{q})
 &= \left( \frac{s_n !}{\prod_{m=1}^M x_{nm} !} \right)
 \prod_{m=1}^M {q_m}^{x_{nm}}
 \\
-\text{The answer}
+\text{Yada yada yada...}
 \\
 q_{cm} &= \frac{ \sum_{n=1}^{N_c} x_{nm} } { \sum_{m'=1}^M \sum_{n=1}^{N_c} x_{nm'} }
 \end{aligned}
@@ -288,8 +288,23 @@ For a support vector machine, if we remove one of the support vectors from the t
 
 {\bf Solution.}
 
+I think by definition the margin must increase if you remove one of the supports from a SVM. As demonstrated by the below examples, the margin is maximized according to the support vectors, and removing one support means the margin is maximized again, necessarily to a larger space. It is not only the width that can change, but, as shown in the second example, the direction/slope of the boundary can be greatly changed by the removal.
 
+\begin{figure}[H]
+\centering
+  \includegraphics[width=\linewidth]{code/svm.png}
+ \caption{Affect on Support Vector Machine of removing one support (random seed = 1)}
+\label{label}
+\end{figure}
 
+\begin{figure}[H]
+\centering
+  \includegraphics[width=\linewidth]{code/svm2.png}
+ \caption{Affect on Support Vector Machine of removing one support (image generated at random, unknown seed)}
+\label{label}
+\end{figure}
+
+\verbatiminput{./code/svm.py}
 
 %%%     Problem 5
 \item[5.]  [4 points]
