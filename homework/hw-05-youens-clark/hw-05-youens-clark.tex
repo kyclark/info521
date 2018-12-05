@@ -116,24 +116,9 @@ Graduate
 \end{flushright}
 
 \vspace{1cm}
-{\Large {\bf Instructions}}
 
-In this assignment, exercises 5 and 6 require you to write small python scripts; the details for those scripts, along with their .py name are described in the exercises.  All of the exercises in this homework require written derivations, short answers, and/or plots, so you will also submit a .pdf of your written answers.  (You can use \latex or any other system (including handwritten; plots, of course, must be program-generated) as long as the final version is in PDF.)
+N.B.: I worked with Kai Blumberg, Matt Miller, and Enrico Schiassi.
 
-\boldred{The final submission will include (minimally) the two scripts you need to write for problems 5 and 6, and a PDF version of your written part of the assignment.  You are required to create either a .zip or tarball (.tar.gz / .tgz) archive of all of the files for your submission and submit your archive to the d2l dropbox by the date/time deadline above.}
-
-NOTE: Problem 3 is required for Graduate students only; Undergraduates may complete this problem for extra credit equal to the point value.
-
-(FCMA refers to the course text: Rogers and Girolami (2016), {\em A First Course in Machine Learning}, second edition.  For general notes on using \latex to typeset math, see: \\{\tt http://en.wikibooks.org/wiki/LaTeX/Mathematics})
-\vspace{.5cm}
-
-
-
-%%%%%%%%%%%%%%%%
-%%%     Problems
-%%%%%%%%%%%%%%%%
-
-\newpage
 \begin{itemize}
 
 %%%     Problem 1
@@ -164,20 +149,14 @@ L &= p(\mathbf{X}^c|\boldsymbol{\mu}_c, \boldsymbol{\Sigma}_c)
 -\frac{1}{2} (\mathbf{x}_n\ - \boldsymbol {\mu}_c)^\top \boldsymbol {\Sigma}_c^{-1} (\mathbf{x}_n - \boldsymbol {\mu}_c)
 \right\}
 \\
-&\propto 
-|\boldsymbol {\Sigma}_c|^{-{N_c}/2}
-\exp 
-\left\{ 
-\sum_n^{N_c} -\frac{1}{2} (\mathbf{x}_n\ - \boldsymbol {\mu}_c)^\top \boldsymbol {\Sigma}_c^{-1} (\mathbf{x}_n - \boldsymbol {\mu}_c)
-\right\}
-\\
 % 
 % Log
 %
 \text{Use log to handle exponent}
 \\
-\log(L) &= 
+\log(L) &\propto 
 \left( - \frac{N_c}{2} \log(|\boldsymbol {\Sigma}_c|) \right)
++
 \left(
 -\frac{1}{2} \sum_n^{N_c} (\mathbf{x}_n\ - \boldsymbol {\mu}_c)^\top \boldsymbol {\Sigma}_c^{-1} (\mathbf{x}_n - \boldsymbol {\mu}_c)
 \right)
@@ -256,17 +235,58 @@ Compute the maximum likelihood estimates of $q_{mc}$ for class $c$ of a Bayesian
 
 \begin{eqnarray*}
 \begin{aligned}
-L &= P(x_n | \mathbf{q})
+P(\mathbf{x}_n | \mathbf{q}) &= \left( \frac{s_n !}{\prod_{m=1}^M x_{nm} !} \right)
+\prod_{m=1}^M q_{m}^{x_{nm}}
 \\
-&= \left( \frac{s_n !}{\prod_{m=1}^M x_{nm} !} \right)
-\prod_{m=1}^M {q_m}^{x_{nm}}
+L(\mathbf{x}| \mathbf{q}) &\propto \prod_{n=1}^{N_c} \prod_{m=1}^M {q_{cm}}^{x_{nm}}
 \\
-\text{Yada yada yada...}
+l = \log(L) &= \sum_{n=1}^N \sum_{m=1}^M x_{nm} \log(q_{cm})
 \\
-q_{cm} &= \frac{ \sum_{n=1}^{N_c} x_{nm} } { \sum_{m'=1}^M \sum_{n=1}^{N_c} x_{nm'} }
+\text{Need to include constraint, Lagrange multiplier}
+\\
+\sum_{m=1}^M q_{cm} &= 1
+\\
+l' &= \sum_{n=1}^{N_c} \sum_{m=1}^M x_{nm} \log(q_{cm}) + \lambda(1 - \sum_{m=1}^M q_{cm})
+\\
+\text{Take the derivative, set to 0}
+\\
+\frac{\partial l'}{\partial q_{cm}} &= 
+\frac{ \sum_{n=1}^{N_c} \sum_{m=1}^M x_{nm} }{ \sum_{m=1}^M q_{cm}} - \lambda = 0
+\\
+\lambda &= \frac{ \sum_{n=1}^{N_c} \sum_{m=1}^M x_{nm} }{\sum_{m=1}^M q_{cm}}
+\\
+\sum_{n=1}^{N_c} \sum_{m=1}^M x_{nm} &= \lambda \sum_{m=1}^M q_{cm}
+\\
+\sum_{m=1}^M q_{cm} &= \frac{ \sum_{n=1}^{N_c} \sum_{m=1}^M x_{nm} }{ \lambda }
 \end{aligned}
 \end{eqnarray*}
 
+\begin{eqnarray*}
+\begin{aligned}
+\frac{\partial \log(l')}{\partial \lambda} &= 
+1 - \sum_{m=1}^M q_{cm} = 0
+\\
+\sum_{m=1}^M q_{cm} &= 1 
+\\
+\text{Use the equation three up from here to get:}
+\\
+\frac{ \sum_{n=1}^{N_c} \sum_{m=1}^M x_{nm} }{ \lambda } &= 1
+\\
+\text{Solve for $\lambda$ :}
+\\
+\lambda &= \sum_{n=1}^{N_c} \sum_{m=1}^M x_{nm}
+\\
+\text{Plug lambda back into this (from above):}
+\\
+\sum_{m=1}^M q_{cm} &= \frac{ \sum_{n=1}^{N_c} \sum_{m=1}^M x_{nm} }{ \lambda }
+\\
+\text{To get this:}
+\\
+\sum_{m=1}^M q_{cm} &= \frac{ \sum_{n=1}^{N_c} \sum_{m=1}^M x_{nm} }{ \sum_{n=1}^{N_c} \sum_{m=1}^M x_{nm} }
+\end{aligned}
+\end{eqnarray*}
+
+I worked on this for hours and just cannot see how to get the correct answer. How can you drop the $\sum_M$ on $q_{cm}$? Where does $m'$ come from? These are mysteries I cannot solve.
 
 %%%     Problem 3
 \item[3.]  [4 points]  \boldred{Required only for Graduates}
@@ -278,7 +298,35 @@ For a Bayesian classifier with multinomial class-conditionals with $M$-dimension
 
 \begin{eqnarray*}
 \begin{aligned}
-L(\mathbf{X}, \mathbf{q}) \propto \prod_{m=1}^M q_m^{x_{nm}}
+\text{Likelihood (multinomial):}
+\\
+P(\mathbf{x}_n, \mathbf{q}_c) &= \left( \frac{s_n!}{\prod_{m=1}^M x_{nm}! } \right) \prod_{m=1}^M q_{mc}^{x_{nm}}
+\\
+P(\mathbf{x}, \mathbf{q}_c) &\propto \prod_{n=1}^{N_c} \prod_{m=1}^M q_{mc}^{x_{nm}}
+\\
+&= \prod_{m=1}^M q_{mc}^{\sum_{n=1}^{N_c} x_{nm}}
+\\
+\text{Prior (Dirichlet):}
+\\
+p(\mathbf{q}_c | \alpha ) &= \frac{ \left( \Gamma \sum_{m=1}^M \alpha \right) }{ \prod_{m=1}^M \Gamma(\alpha) }
+\prod_{m=1}^M q_{mc}^{\alpha - 1}
+\\
+\text{Posterior = Likelihood $\times$ Prior:}
+\\
+&\propto \left( \prod_{m=1}^M q_{mc}^{\sum_{n=1}^{N_c} x_{nm}} \right) 
+\times
+\left( \prod_{m=1}^M q_{mc}^{\alpha - 1} \right)
+\\
+&= \prod_{m=1}^M q_{mc}^{\sum_{n=1}^{N_c} x_{nm} + \alpha - 1}
+\\
+\text{To account for each dimension in $M$, create a vector:}
+\\
+\hat{\alpha} &= \left( 
+\sum_{n=1}^{N_c} x_{n1} + \alpha, 
+\sum_{n=1}^{N_c} x_{n2} + \alpha,
+\dots
+\sum_{n=1}^{N_c} x_{nM} + \alpha
+\right)
 \end{aligned}
 \end{eqnarray*}
 
@@ -292,16 +340,14 @@ I think by definition the margin must increase if you remove one of the supports
 
 \begin{figure}[H]
 \centering
-  \includegraphics[width=\linewidth]{code/svm.png}
- \caption{Affect on Support Vector Machine of removing one support (random seed = 1)}
-\label{label}
+  \includegraphics{code/svm.png}
+ \caption{Affect on SVM of removing one support (random seed = 1)}
 \end{figure}
 
 \begin{figure}[H]
 \centering
-  \includegraphics[width=\linewidth]{code/svm2.png}
+  \includegraphics{code/svm2.png}
  \caption{Affect on Support Vector Machine of removing one support (image generated at random, unknown seed)}
-\label{label}
 \end{figure}
 
 \verbatiminput{./code/svm.py}
@@ -314,64 +360,52 @@ In python file, the function {\tt knn} is to compute the k-nearest neighbors cla
 
 {\bf Solution.}
 
-When k=1, the boundaries are too close, creating islands of the green squares when they ought to be assumed to have crossed into enemy territory. K of 5 or 10 does a much better job capturing what I would judge to be the real boundary. K of 59 is far too high and pushes the border too far into green square's territory because there are fewer of those class than the other.
-
 \begin{figure}[H]
 \centering
-  \includegraphics[width=\linewidth]{code/knn_binary_data-k-1.png}
- \caption{KNN k=1 binary classification}
-\label{label}
+  \includegraphics{code/knn_binary_data-k-1.png}
+ \caption{KNN k=1 binary classification. Notice the island of blue inside the red where two green points are clearly in the wrong place. When k=1, the boundaries are too close, creating islands of the green squares when they ought to be assumed to have crossed into enemy territory.}
 \end{figure}
 
 \begin{figure}[H]
 \centering
-  \includegraphics[width=\linewidth]{code/knn_binary_data-k-5.png}
- \caption{KNN k=5 binary classification}
-\label{label}
+  \includegraphics{code/knn_binary_data-k-5.png}
+ \caption{KNN k=5 binary classification. Here the boundary appears much smoother, and the three green squares all appear to be in red circle's territory.}
 \end{figure}
 
 \begin{figure}[H]
 \centering
-  \includegraphics[width=\linewidth]{code/knn_binary_data-k-10.png}
- \caption{KNN k=10 binary classification}
-\label{label}
+  \includegraphics{code/knn_binary_data-k-10.png}
+ \caption{KNN k=10 binary classification. At k=10, now the red territory is pushing further into green's because there are more of them.}
 \end{figure}
 
 \begin{figure}[H]
 \centering
-  \includegraphics[width=\linewidth]{code/knn_binary_data-k-59.png}
- \caption{KNN k=59 binary classification}
-\label{label}
-\end{figure}
-
-For the classification of three classes, k of 1 again is too liberal with creating boundaries for instance the one green square that is clearly in the red circle's area and also a red circle that ventures into the blue region. Again k of 5 and 10 create smoother boundaries that allow errant positions to wander where they ought not. K of 59 isn't actually terrible since there are roughly equal numbers of the three classes and so no one class gets marginalized too much, but it does a poorer job than 5 or 10.
-
-\begin{figure}[H]
-\centering
-  \includegraphics[width=\linewidth]{code/knn_three_class_data-k-1.png}
- \caption{KNN k=1 three class classification}
-\label{label}
+  \includegraphics{code/knn_binary_data-k-59.png}
+ \caption{KNN k=59 binary classification. At k=59, red's majority is clearly creating a great deal of influence, pushing green into the corner.}
 \end{figure}
 
 \begin{figure}[H]
 \centering
-  \includegraphics[width=\linewidth]{code/knn_three_class_data-k-5.png}
- \caption{KNN k=5 three class classification}
-\label{label}
+  \includegraphics{code/knn_three_class_data-k-1.png}
+ \caption{KNN k=1 three class classification. For the classification of three classes, k of 1 again is too liberal with creating boundaries for instance the one green square that is clearly in the red circle's area and also a red circle that ventures into the blue region.}
 \end{figure}
 
 \begin{figure}[H]
 \centering
-  \includegraphics[width=\linewidth]{code/knn_three_class_data-k-10.png}
- \caption{KNN k=10 three class classification}
-\label{label}
+  \includegraphics{code/knn_three_class_data-k-5.png}
+ \caption{KNN k=5 three class classification. Again k of 5 and 10 create smoother boundaries that allow errant positions to wander where they ought not.}
 \end{figure}
 
 \begin{figure}[H]
 \centering
-  \includegraphics[width=\linewidth]{code/knn_three_class_data-k-59.png}
- \caption{KNN k=59 three class classification}
-\label{label}
+  \includegraphics{code/knn_three_class_data-k-10.png}
+ \caption{KNN k=10 three class classification. K of 10 does about as well at 5.}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+  \includegraphics{code/knn_three_class_data-k-59.png}
+ \caption{KNN k=59 three class classification. K of 59 isn't actually terrible since there are roughly equal numbers of the three classes and so no one class gets marginalized too much, but it does a poorer job than 5 or 10.}
 \end{figure}
 
 \verbatiminput{./code/knn.py}
@@ -384,16 +418,14 @@ Using your implementation of your KNN classifier in exercise 5, write a script t
 
 \begin{figure}[H]
 \centering
-  \includegraphics[width=\linewidth]{code/knn-cv-binary.png}
- \caption{10-fold cross validation of KNN on binary classification where 1 <= k <= 30}
-\label{label}
+  \includegraphics{code/knn-cv-binary.png}
+ \caption{10-fold CV of KNN on binary classification where $1 \leq k \leq 30$}
 \end{figure}
 
 \begin{figure}[H]
 \centering
   \includegraphics[width=\linewidth]{code/knn-cv-three.png}
- \caption{10-fold cross validation of KNN on three-class classification where 1 <= k <= 30}
-\label{label}
+ \caption{10-fold CV of KNN on three-class classification where $1 \leq k \leq 30$}
 \end{figure}
 
 \verbatiminput{./code/knn-cv.py}

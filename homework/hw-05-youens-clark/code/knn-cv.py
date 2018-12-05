@@ -13,7 +13,6 @@ import matplotlib.pyplot as plt
 from collections import Counter
 from scipy.spatial import distance
 from sklearn.model_selection import KFold
-from sklearn.model_selection import ShuffleSplit
 from sklearn.model_selection import train_test_split
 
 
@@ -96,26 +95,28 @@ def main():
     iterations = args.iterations
     out_file = args.outfile
 
-    df = pd.read_csv(infile)
+    def debug(msg):
+        if not args.quiet:
+            warn(msg)
+
+    df = pd.read_csv(infile, header=None)
     X = df.iloc[:, 0:2].values
     t = pd.to_numeric(df.iloc[:, 2].values, downcast='integer')
-
-    kf = KFold(n_splits=iterations)
-
+    splits = list(KFold(n_splits=iterations).split(X))
     x_plot = []
     y_plot = []
+
     for k in range(1, K + 1):
         predictions = []
-        for train, test in kf.split(X):
-            X_train, X_test, y_train, y_test = X[train], X[test], t[train], t[
-                test]
+        for (train, test) in splits:
             predicted = list(
-                map(lambda p: knn(p, k, X_train, y_train), X_test))
-            predictions.append(np.mean(predicted == y_test))
+                map(lambda p: knn(p, k, X[train], t[train]), X[test]))
+            predictions.append(np.mean(predicted == t[test]))
 
-        print('k {} = {}'.format(k, np.mean(predictions)))
+        average = np.mean(predictions)
+        debug('k {} = {}'.format(k, average))
         x_plot.append(k)
-        y_plot.append(np.mean(predictions))
+        y_plot.append(average)
 
     best = np.argmax(y_plot) + 1
 
@@ -123,14 +124,15 @@ def main():
     plt.title('Best k = {}'.format(best))
 
     if out_file:
-        warn('Saving figure to "{}"'.format(out_file))
+        debug('Saving figure to "{}"'.format(out_file))
         plt.savefig(out_file)
 
     if not args.quiet:
-        warn('Showing figure')
+        debug('Showing figure')
         plt.show()
 
-    warn('Done')
+    debug('Done')
+
 
 # --------------------------------------------------
 if __name__ == '__main__':
