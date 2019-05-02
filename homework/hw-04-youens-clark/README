@@ -1,0 +1,5 @@
+This is homework assignment 4 for INFO521.
+
+The Python programs are written to use your default Python 3. Run with "-h"
+to see usage. You can use "make laplace" to create the three Laplace 
+approximation graphs of the Beta distribution.
